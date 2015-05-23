@@ -2,10 +2,10 @@
 header('Content-Type: text/html; charset="utf-8"');
 set_include_path(get_include_path() . PATH_SEPARATOR . "controller/");
 
-//function __autoload($classname) {
-//    $filename = "./". $classname .".php";
-//    include_once($filename);
-//}
+function __autoload($classname) {
+    $filename = "./". $classname .".php";
+    include_once($filename);
+}
 
 $sxml = simplexml_load_file("http://news.liga.net/all/rss.xml");
 
