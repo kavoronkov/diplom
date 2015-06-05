@@ -2,6 +2,8 @@
 
 class ModelItem {
 
+    static public $counter;
+
     protected $id;          // primary key / первичный ключ
     protected $item;        // item name / название ресурса
     protected $link;        // item url / url ресурса
@@ -11,17 +13,19 @@ class ModelItem {
     protected $text;        // item content / подробное описание ресурса
     protected $idForeign;   // foreign key / внешний ключ
 
-    function __construct($id, $item, $link, $description, $image, $pubDate, $text, $idForeign)
-    {
-        $this->id = $id;
-        $this->item = $item;
-        $this->link = $link;
-        $this->description = $description;
-        $this->image = $image;
-        $this->pubDate = $pubDate;
-        $this->text = $text;
-        $this->idForeign = $idForeign;
-    }
+    function __construct() { }
+
+//    function __construct($id, $item, $link, $description, $image, $pubDate, $text, $idForeign)
+//    {
+//        $this->id = $id;
+//        $this->item = $item;
+//        $this->link = $link;
+//        $this->description = $description;
+//        $this->image = $image;
+//        $this->pubDate = $pubDate;
+//        $this->text = $text;
+//        $this->idForeign = $idForeign;
+//    }
 
     public function getId()
     {
