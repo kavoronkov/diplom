@@ -2,25 +2,24 @@
 
 class ControllerItem {
 
-//    protected function add($xml) {
-//        $sxml = simplexml_load_file($xml);
-//    }
-
-    protected function insert($xml) {
+    protected function parseInsertLiga(ModelSource $objModelSource) {
 
         $params = parse_ini_file('config.ini');
         $db = new PDO($params['db.conn'], $params['db.user'], $params['db.pass']);
 
-        //$sxml = simplexml_load_file($xml);
-        $sxml = simplexml_load_file("http://news.liga.net/politics/rss.xml");
+        $sxml = simplexml_load_file($objModelSource->getXml());
+        //$sxml = simplexml_load_file("http://news.liga.net/politics/rss.xml");
         $sxmlItem = $sxml->xpath("/rss/channel/item");
 
         foreach($sxmlItem as $item) {
+
+            $objModelItem = new ModelItem();
+            ModelItem::$counter++;
+            $id = date("YmdHis") . (1000+ModelItem::$counter);
+            $objModelItem->setId($id);
+
             foreach($item as $itemProperty) {
-                $objModelItem = new ModelItem();
-                ModelItem::$counter++;
-                $id = date("YmdHis") . (1000+ModelItem::$counter);
-                $objModelItem->setId($id);
+
                 switch($itemProperty->getName())
                 {
                     case "title" : $objModelItem->setItem($itemProperty->__toString()); break;
@@ -31,18 +30,20 @@ class ControllerItem {
                     default : echo "ERROR"; break;
                 }
 
-                var_dump($objModelItem);
-
-//                $stmt = $db->prepare("INSERT INTO item(id, item, link, description, image, pubDate)
-//                                             VALUES (:id, :item, :link, :description, :image, :puDate)");
-//                $stmt->execute(array(":id" => $objModelItem->getId(),
-//                                     ":item" => $objModelItem->getItem(),
-//                                     ":link" => $objModelItem->getLink(),
-//                                     ":descr" => $objModelItem->getDescription(),
-//                                     ":image" => $objModelItem->getImage(),
-//                                     ":pubdate" => $objModelItem->getPubDate()));
-
             }
+
+            $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.idSource
+                                   FROM Item ORDER BY Item.pubDate DESC LIMIT 1");
+
+            $stmt = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate)
+                                  VALUES (:id, :name, :link, :description, :image, :pubDate)");
+
+            $stmt->execute(array(":id" => $objModelItem->getId(),
+                                 ":name" => $objModelItem->getItem(),
+                                 ":link" => $objModelItem->getLink(),
+                                 ":description" => $objModelItem->getDescription(),
+                                 ":image" => $objModelItem->getImage(),
+                                 ":pubDate" => $objModelItem->getPubDate()));
         }
     }
 }
