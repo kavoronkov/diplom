@@ -32,16 +32,16 @@ foreach($sxmlItem as $item) {
             default : echo "ERROR"; break;
         }
 
-        $stmt = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate)
-                              VALUES(:id, :name, :link, :description, :image, :pubDate)");
-        $stmt->execute(array(":id" => $objModelItem->getId(),
-                             ":name" => $objModelItem->getItem(),
-                             ":link" => $objModelItem->getLink(),
-                             ":description" => $objModelItem->getDescription(),
-                             ":image" => $objModelItem->getImage(),
-                             ":pubDate" => $objModelItem->getPubDate()));
-
     }
-//    echo ModelItem::$counter;
+
+    $stmt = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate)
+                              VALUES(:id, :name, :link, :description, :image, :pubDate)");
+
+    $stmt->execute(array(":id" => $objModelItem->getId(),
+                         ":name" => $objModelItem->getItem(),
+                         ":link" => $objModelItem->getLink(),
+                         ":description" => $objModelItem->getDescription(),
+                         ":image" => $objModelItem->getImage(),
+                         ":pubDate" => $objModelItem->getPubDate()));
 }
 
