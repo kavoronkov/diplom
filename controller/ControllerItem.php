@@ -12,12 +12,15 @@ class ControllerItem {
         $db = new PDO($params['db.conn'], $params['db.user'], $params['db.pass']);
 
         //$sxml = simplexml_load_file($xml);
-        $sxml = simplexml_load_file("http://news.liga.net/all/rss.xml");
+        $sxml = simplexml_load_file("http://news.liga.net/politics/rss.xml");
         $sxmlItem = $sxml->xpath("/rss/channel/item");
 
         foreach($sxmlItem as $item) {
             foreach($item as $itemProperty) {
                 $objModelItem = new ModelItem();
+                ModelItem::$counter++;
+                $id = date("YmdHis") . (1000+ModelItem::$counter);
+                $objModelItem->setId($id);
                 switch($itemProperty->getName())
                 {
                     case "title" : $objModelItem->setItem($itemProperty->__toString()); break;
@@ -28,20 +31,18 @@ class ControllerItem {
                     default : echo "ERROR"; break;
                 }
 
-                $stmt = $db->prepare("INSERT INTO item(item, link, description, image, pubDate)
-                                        VALUES (:item,:link,:descr,:image,:pudate)");
-//                $stmt->execute(array(
-//                    ":item" => $objModelItem->getItem(),
-//                    ":link" => $objModelItem->getLink(),
-//                    ":descr" => $objModelItem->getDescription(),
-//                    ":image" => $objModelItem->getImage(),
-//                    ":pubdate" => $objModelItem->getPubDate()
-//                ));
+                var_dump($objModelItem);
+
+//                $stmt = $db->prepare("INSERT INTO item(id, item, link, description, image, pubDate)
+//                                             VALUES (:id, :item, :link, :description, :image, :puDate)");
+//                $stmt->execute(array(":id" => $objModelItem->getId(),
+//                                     ":item" => $objModelItem->getItem(),
+//                                     ":link" => $objModelItem->getLink(),
+//                                     ":descr" => $objModelItem->getDescription(),
+//                                     ":image" => $objModelItem->getImage(),
+//                                     ":pubdate" => $objModelItem->getPubDate()));
 
             }
         }
-
-
     }
-
 }

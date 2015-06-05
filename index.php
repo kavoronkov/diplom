@@ -6,47 +6,42 @@ spl_autoload_register(function ($class) {
     include 'model/' . $class . '.php';
 });
 
-$sxml = simplexml_load_file("http://news.liga.net/all/rss.xml");
+$params = parse_ini_file('config.ini');
+$db = new PDO($params['db.conn'], $params['db.user'], $params['db.pass']);
 
-//print_r($sxml);
-$objModelItem = new ModelItem();
+//$sxml = simplexml_load_file($xml);
+$sxml = simplexml_load_file("http://news.liga.net/politics/rss.xml");
+$sxmlItem = $sxml->xpath("/rss/channel/item");
 
-$result = $sxml->xpath("/rss/channel/item");
-//
-//foreach($sxml->channel->item as $item) {
-//    echo $item->title . "<br>";
-//}
+foreach($sxmlItem as $item) {
 
-
-
-//var_dump($result);
-foreach($result as $sxmlItem) {
+    $objModelItem = new ModelItem();
     ModelItem::$counter++;
     $id = date("YmdHis") . (1000+ModelItem::$counter);
-    echo "<br>ID = ".$id;
-    foreach($sxmlItem as $param) {
-        if($param->getName() == "enclosure" ) {
-            foreach($param->attributes() as $img) {
-                echo $img . "<br>";
-            }
-        } else {
-            echo $param."<br>";
-        }
-        switch($param->getName())
+    $objModelItem->setId($id);
+
+    foreach($item as $itemProperty) {
+
+        switch($itemProperty->getName())
         {
-            case "title" : $objModelItem->setItem($param); break;
-            case "link" : $objModelItem->setLink($param->__toString()); break;
-            case "description" : $objModelItem->setDescription($param->__toString()); break;
-            case "enclosure" : $objModelItem->setImage($param->attributes()->url->__toString()); break;
-            case "pubDate" : $objModelItem->setPubDate($param->__toString()); break;
+            case "title" : $objModelItem->setItem($itemProperty->__toString()); break;
+            case "link" : $objModelItem->setLink($itemProperty->__toString()); break;
+            case "description" : $objModelItem->setDescription($itemProperty->__toString()); break;
+            case "enclosure" : $objModelItem->setImage($itemProperty->attributes()->url->__toString()); break;
+            case "pubDate" : $objModelItem->setPubDate($itemProperty->__toString()); break;
             default : echo "ERROR"; break;
         }
 
     }
 
+    $stmt = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate)
+                              VALUES(:id, :name, :link, :description, :image, :pubDate)");
 
-    var_dump($objModelItem);
+    $stmt->execute(array(":id" => $objModelItem->getId(),
+                         ":name" => $objModelItem->getItem(),
+                         ":link" => $objModelItem->getLink(),
+                         ":description" => $objModelItem->getDescription(),
+                         ":image" => $objModelItem->getImage(),
+                         ":pubDate" => $objModelItem->getPubDate()));
 }
-
-//var_dump($objModelItem);
 
