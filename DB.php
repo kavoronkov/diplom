@@ -28,7 +28,7 @@ class DB
                                          $_connection_settings['db.user'],
                                          $_connection_settings['db.pass']);
         } catch (PDOException $pdo_ex) {
-            throw new PDOException ('Ошибка соединения с базой данных '.$pdo_ex->getMessage());
+            throw new PDOException ('Ошибка соединения с базой данных ' . $pdo_ex->getMessage());
         }
     }
 }
