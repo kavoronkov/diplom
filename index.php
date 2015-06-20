@@ -1,9 +1,9 @@
 <?php
 header('Content-Type: text/html; charset="utf-8"');
-set_include_path(get_include_path() . PATH_SEPARATOR . "controller/");
+set_include_path(get_include_path() . PATH_SEPARATOR . "controllers/");
 
 spl_autoload_register(function ($class) {
-    include 'model/' . $class . '.php';
+    include 'models/' . $class . '.php';
 });
 
 $params = parse_ini_file('config.ini');
