@@ -7,6 +7,10 @@ class DB
 
     private function __construct(){}
 
+    final public function __destruct() {
+        self::$_instance = null;
+    }
+
     private function __clone(){}
 
     //private function __wakeup() {}
