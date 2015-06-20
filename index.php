@@ -1,4 +1,5 @@
 <?php
 
-include "application/Application";
+include "application/Application.php";
 
+$fc = Application::getInstance() -> init();
