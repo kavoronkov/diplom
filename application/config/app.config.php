@@ -6,7 +6,8 @@ return array(
         "models" => "application/models",
         "views" => "application/views",
         "modules" => "modules",
-        "core" => "core"
+        "core" => "core",
+        "patterns" => "core/patterns"
     ),
 
     "dbconnection" => array(
