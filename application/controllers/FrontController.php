@@ -12,21 +12,19 @@ class FrontController {
 
         $request = explode("/", $request);
 
+        $ctrlName = (!empty($request[0])) ? $request[0] . "Controller" : "IndexController";
+        $actionName = (!empty($request[1])) ? $request[1] . "Action" : "pageNotFoundAction";
 
-        if(!empty($request[0])) {
-            $ctrlName = $request[0] . "Controller";
-            $actionName = $request[1] . "Action";
-
-            if (class_exists($ctrlName)) {
-                $ctrl = new $ctrlName();
-                if($ctrl instanceof IController) {
-                    if (method_exists($ctrl, $actionName)) {
-                        $ctrl->$actionName();
-                    }
+        if (class_exists($ctrlName)) {
+            $ctrl = new $ctrlName();
+            if($ctrl instanceof IController) {
+                if (method_exists($ctrl, $actionName)) {
+                    $ctrl->$actionName();
                 }
-            }else {
-
             }
+        }else {
+            // action BAD
         }
+
     }
 }
