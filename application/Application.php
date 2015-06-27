@@ -28,7 +28,9 @@ class Application {
     }
 
     private function setAutoload() {
-        spl_autoload_register();
+        $al = self::$mainCfg["autoload"];
+        require_once ($al["class"].".php");
+        spl_autoload_register(array( $al["class"] => $al["method"]));
     }
 
 }

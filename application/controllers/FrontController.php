@@ -19,9 +19,10 @@ class FrontController {
 
             if (class_exists($ctrlName)) {
                 $ctrl = new $ctrlName();
-
-                if(method_exists($ctrl,$actionName)) {
-                    $ctrl -> $actionName();
+                if($ctrl instanceof IController) {
+                    if (method_exists($ctrl, $actionName)) {
+                        $ctrl->$actionName();
+                    }
                 }
             }else {
 

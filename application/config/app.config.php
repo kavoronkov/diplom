@@ -5,7 +5,8 @@ return array(
         "controllers" => "application/controllers",
         "models" => "application/models",
         "views" => "application/views",
-        "modules" => "modules"
+        "modules" => "modules",
+        "core" => "core"
     ),
 
     "dbconnection" => array(
@@ -13,5 +14,10 @@ return array(
         "dbName" => "NewsAgregator",
         "dbUser" => "root",
         "dbPass" => "",
+    ),
+
+    "autoload" => array(
+        "class" => "Autoloader",
+        "method"=> "classLoader"
     )
 );
