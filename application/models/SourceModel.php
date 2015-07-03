@@ -1,6 +1,6 @@
 <?php
 
-class ModelSource {
+class SourceModel {
 
     protected $id;          // primary key / первичный ключ
     protected $name;        // source name / название ресурса
