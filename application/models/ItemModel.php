@@ -1,6 +1,6 @@
 <?php
 
-class ModelItem {
+class ItemModel {
 
     static public $counter;
 

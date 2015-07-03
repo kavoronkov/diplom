@@ -1,6 +1,6 @@
 <?php
 
-class ModelCategory {
+class CategoryModel {
 
     protected $id;        // primary key / первичный ключ
     protected $name;      // name news category/ название новостной категории

@@ -1,6 +1,6 @@
 <?php
 
-class ModelModule {
+class ModuleModel {
 
     protected $id;   // primary key / первичный ключ
     protected $name; // category name / название категории
