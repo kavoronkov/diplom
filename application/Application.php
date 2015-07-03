@@ -29,7 +29,7 @@ class Application {
     }
 
     private function getApplicationConfig() {
-        self::$mainCfg = require_once "config/app.config.php";
+        self::$mainCfg = require_once "config/application.config.php";
     }
 
     private function setIncludePath() {
