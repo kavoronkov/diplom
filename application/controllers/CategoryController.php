@@ -1,6 +1,6 @@
 <?php
 
-class ControllerCategory implements IController {
+class CategoryController implements IController {
     public function indexAction() {
         // TODO: Implement indexAction() method.
     }

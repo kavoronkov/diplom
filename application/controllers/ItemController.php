@@ -1,13 +1,13 @@
 <?php
 
-class ControllerItem {
+class ItemController {
 
-    protected function parseInsertLiga(ModelSource $objModelSource) {
+    protected function parseInsertLiga(SourceModel $objSourceModel) {
 
         $params = parse_ini_file('config.ini');
         $db = new PDO($params['db.conn'], $params['db.user'], $params['db.pass']);
 
-        $sxml = simplexml_load_file($objModelSource->getXml());
+        $sxml = simplexml_load_file($objSourceModel->getXml());
         //$sxml = simplexml_load_file("http://news.liga.net/politics/rss.xml");
         $sxmlItem = $sxml->xpath("/rss/channel/item");
 
