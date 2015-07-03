@@ -15,9 +15,9 @@ $sxmlItem = $sxml->xpath("/rss/channel/item");
 
 foreach($sxmlItem as $item) {
 
-    $objModelItem = new ModelItem();
-    ModelItem::$counter++;
-    $id = date("YmdHis") . (1000+ModelItem::$counter);
+    $objModelItem = new ItemModel();
+    ItemModel::$counter++;
+    $id = date("YmdHis") . (1000+ItemModel::$counter);
     $objModelItem->setId($id);
 
     foreach($item as $itemProperty) {
@@ -28,20 +28,33 @@ foreach($sxmlItem as $item) {
             case "link" : $objModelItem->setLink($itemProperty->__toString()); break;
             case "description" : $objModelItem->setDescription($itemProperty->__toString()); break;
             case "enclosure" : $objModelItem->setImage($itemProperty->attributes()->url->__toString()); break;
-            case "pubDate" : $objModelItem->setPubDate($itemProperty->__toString()); break;
+            case "pubDate" : $objModelItem->setPubDate($itemProperty->__toString());
+//                             $objModelItem->setIdForeign($$objSourceModel->getId());
+                             break;
             default : echo "ERROR"; break;
         }
 
     }
 
-    $stmt = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate)
-                              VALUES(:id, :name, :link, :description, :image, :pubDate)");
+    $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.idSource
+                                   FROM Item ORDER BY Item.pubDate DESC LIMIT 1");
+    $check->execute();
 
-    $stmt->execute(array(":id" => $objModelItem->getId(),
-                         ":name" => $objModelItem->getItem(),
-                         ":link" => $objModelItem->getLink(),
-                         ":description" => $objModelItem->getDescription(),
-                         ":image" => $objModelItem->getImage(),
-                         ":pubDate" => $objModelItem->getPubDate()));
+    if( $objModelItem->getLink() == $check["link"] &&
+        $objModelItem->getPubDate() == $check["pubDate"] &&
+        $objModelItem->getIdForeign() == $check["idSource"] ) { break; }
+    else {
+        $stmt = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate)
+                                  VALUES (:id, :name, :link, :description, :image, :pubDate)");
+
+        $stmt->execute(array(":id" => $objModelItem->getId(),
+            ":name" => $objModelItem->getItem(),
+            ":link" => $objModelItem->getLink(),
+            ":description" => $objModelItem->getDescription(),
+            ":image" => $objModelItem->getImage(),
+            ":pubDate" => $objModelItem->getPubDate()));
+    }
+
+
 }
 

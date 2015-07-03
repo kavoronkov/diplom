@@ -5,8 +5,8 @@ class FrontController {
 
     public function route() {
         $request = $_SERVER["REQUEST_URI"];
-        // пРОВЕРИТЬ  на наличие знака ?
-        $request = explode("?",$request);
+        // Проверить на наличие знака ?
+        $request = explode("?", $request);
 
         $request = trim($request,"/");
 
