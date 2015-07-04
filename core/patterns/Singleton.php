@@ -11,7 +11,11 @@ trait Singleton {
 
     private function __construct(){}
 
-    private function __clone(){}
+    final public function __destruct() {
+        self::$_instance = null;
+    }
+
+        private function __clone(){}
 
     public static function getInstance() {
         // проверяем актуальность экземпляра

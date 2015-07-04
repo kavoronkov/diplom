@@ -3,12 +3,7 @@
 class ItemController {
 
     protected function parseInsertLiga(SourceModel $objSourceModel) {
-
-//        $params = parse_ini_file('config.ini');
-        $db = new PDO( "mysql:host=" . Application::$mainCfg["dbconnection"]["dbHost"] .
-                       ";dbname=" . Application::$mainCfg["dbconnection"]["dbName"],
-                       Application::$mainCfg["dbconnection"]["dbUser"],
-                       Application::$mainCfg["dbconnection"]["dbPass"] );
+        $db = DBConnection::getInstance()->_connection;
 
         $sxml = simplexml_load_file($objSourceModel->getXml());
         //$sxml = simplexml_load_file("http://news.liga.net/politics/rss.xml");
