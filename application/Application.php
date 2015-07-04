@@ -1,6 +1,7 @@
 <?php
 
 class Application {
+
     static public $mainCfg;
 
     static private $_instance;
