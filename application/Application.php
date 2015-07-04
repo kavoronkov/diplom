@@ -27,6 +27,7 @@ class Application {
         self::setIncludePath();
         self::setAutoload();
         $fc = FrontController::getInstance();
+        return $fc;
     }
 
     private function getApplicationConfig() {

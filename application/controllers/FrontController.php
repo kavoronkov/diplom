@@ -8,14 +8,18 @@ class FrontController {
         // Проверить на наличие знака ?
         $request = explode("?", $request);
 
-        $request = trim($request,"/");
+        $request = trim($request[0],"/");
 
         $request = explode("/", $request);
 
         $ctrlName = (!empty($request[0])) ? $request[0] . "Controller" : "IndexController";
-        $actionName = (!empty($request[1])) ? $request[1] . "Action" : "pageNotFoundAction";
+        $actionName = (!empty($request[1])) ? $request[1] . "Action" : "indexAction";
+
+        echo "ctrl = ".$ctrlName;
+        echo "<br>method = ".$actionName;
 
         if (class_exists($ctrlName)) {
+            echo "yes class";
             $ctrl = new $ctrlName();
             if($ctrl instanceof IController) {
                 if (method_exists($ctrl, $actionName)) {
@@ -23,6 +27,7 @@ class FrontController {
                 }
             }
         }else {
+            echo "no class";
             // action BAD
         }
 

@@ -1,9 +1,11 @@
 <?php
 
-class IndexController {
+class IndexController implements IController {
 
-    public function IndexAction() {
-
+    public function indexAction() {
+        echo " = = = indexaction";
+        $objItemController = new ItemController();
+        $objItemController->parseInsertLiga(new SourceModel());
     }
 
 }
