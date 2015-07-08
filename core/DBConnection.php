@@ -3,6 +3,7 @@
 class DBConnection
 {
     use Singleton;
+    
     public $_connection;
     private $_connSettings = array();
 
