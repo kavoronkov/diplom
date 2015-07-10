@@ -8,6 +8,9 @@ class IndexController implements IController {
         //$obj = $objModuleController->createModuleModel("news");
         $objModuleController->insertModuleModel($objModuleController->createModuleModel("news"));
 
+        $objCategoryController = new CategoryController();
+        //$obj = $objCategoryController->createCategoryModel($objModuleController, "politics");
+        $objCategoryController->insertCategoryModel($objCategoryController->createCategoryModel($objModuleController, "politics"));
 
         $objItemController = new ItemController();
         $objItemController->parseInsertLiga(new SourceModel());

@@ -4,8 +4,7 @@ class ModuleController {
 
     public function createModuleModel($name) {
 
-        ModuleModel::$counter++;
-        $objModuleModel = new ModuleModel(ModuleModel::$counter, $name);
+        $objModuleModel = new ModuleModel(strtolower($name), strtoupper($name));
         return $objModuleModel;
 
     }
