@@ -2,8 +2,7 @@
 
 class ItemController {
 
-    private function createIdItemModel(ItemModel $objItemModel)
-    {
+    private function createIdItemModel(ItemModel $objItemModel) {
         ItemModel::$counter++;
         $id = date("YmdHis") . (1000 + ItemModel::$counter);
         $objItemModel->setId($id);
@@ -42,8 +41,7 @@ class ItemController {
         return false;
     }
 
-    private function checkItemModelDB(DBConnection $db)
-    {
+    private function checkItemModelDB(DBConnection $db) {
         $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.idSource
                                    FROM Item ORDER BY Item.pubDate DESC LIMIT 1");
         $check->execute();
@@ -53,8 +51,7 @@ class ItemController {
         return $check;
     }
 
-    private function simplexmlSourceModel(SourceModel $objSourceModel)
-    {
+    private function simplexmlSourceModel(SourceModel $objSourceModel) {
 //        $sxml = simplexml_load_file($objSourceModel->getXml());
         $sxml = simplexml_load_file("http://news.liga.net/politics/rss.xml");
         $sxmlItem = $sxml->xpath("/rss/channel/item");

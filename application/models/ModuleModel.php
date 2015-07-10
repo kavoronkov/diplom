@@ -2,6 +2,8 @@
 
 class ModuleModel {
 
+    static public $counter;
+
     protected $id;   // primary key / первичный ключ
     protected $name; // category name / название категории
 
