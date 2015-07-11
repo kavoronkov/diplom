@@ -4,16 +4,34 @@ class IndexController implements IController {
 
     public function indexAction() {
 
-        $objModuleController = new ModuleController();
-        //$obj = $objModuleController->createModuleModel("news");
-        $objModuleController->insertModuleModel($objModuleController->createModuleModel("news"));
+        return RenderView::render("index");
 
-        $objCategoryController = new CategoryController();
-        //$obj = $objCategoryController->createCategoryModel($objModuleController, "politics");
-        $objCategoryController->insertCategoryModel($objCategoryController->createCategoryModel($objModuleController, "politics"));
+//        $objModuleController = new ModuleController();
+//        //$obj = $objModuleController->createModuleModel("news");
+//        $objModuleController->insertModuleModel($objModuleController->createModuleModel("news"));
+//
+//        $objCategoryController = new CategoryController();
+//        //$obj = $objCategoryController->createCategoryModel($objModuleController, "politics");
+//        $objCategoryController->insertCategoryModel($objCategoryController->createCategoryModel($objModuleController, "politics"));
+//
+//        $objItemController = new ItemController();
+//        $objItemController->parseInsertLiga(new SourceModel());
+    }
 
-        $objItemController = new ItemController();
-        $objItemController->parseInsertLiga(new SourceModel());
+    public function testAction() {
+
+
+
+        $json = file_get_contents("php://input");
+        $o = json_decode($json);
+//        var_dump($o);
+
+        $o->module = "no module like " . $o->module;
+
+        echo json_encode($o);
+
+
+//        echo '{"resp":"URA"}';
     }
 
 }
