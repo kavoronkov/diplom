@@ -20,8 +20,6 @@ class IndexController implements IController {
 
     public function testAction() {
 
-
-
         $json = file_get_contents("php://input");
         $o = json_decode($json);
 //        var_dump($o);

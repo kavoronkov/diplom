@@ -10,20 +10,20 @@ class SourceModel {
     protected $description; // source description // подробное описание ресурса
     protected $idForeign;   // foreign key / внешний ключ
 
-    function __construct() {
-
-    }
-
-//    function __construct($id, $name, $url, $xml, $title, $description, $idForeign)
-//    {
-//        $this->id = $id;
-//        $this->name = $name;
-//        $this->url = $url;
-//        $this->xml = $xml;
-//        $this->title = $title;
-//        $this->description = $description;
-//        $this->idForeign = $idForeign;
+//    function __construct() {
+//
 //    }
+
+    function __construct($id, $name, $url, $xml, $title, $description, $idForeign)
+    {
+        $this->id = $id;
+        $this->name = $name;
+        $this->url = $url;
+        $this->xml = $xml;
+        $this->title = $title;
+        $this->description = $description;
+        $this->idForeign = $idForeign;
+    }
 
     public function getId()
     {
