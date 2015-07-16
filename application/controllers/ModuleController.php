@@ -19,4 +19,26 @@ class ModuleController {
                              ":name" => $objModuleModel->getName()));
     }
 
+    public function selectModuleModel($name) {
+
+        $db = DBConnection::getInstance()->_connection;
+
+        $stmt = $db->prepare("SELECT Module.id, Module.name
+                               FROM Module WHERE Module.name = :name");
+        $stmt->bindParam(':name', strtoupper($name), PDO::PARAM_STR);
+        $stmt->execute();
+//        $stmt->execute(array(":name" => strtoupper($name)));
+
+        $stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $stmt;
+    }
+
+    public function updateModuleModel($name) {
+
+    }
+
+    public function deleteModuleModel($name) {
+
+    }
 }
