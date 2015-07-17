@@ -40,71 +40,96 @@ class ModuleController {
 
         $db = DBConnection::getInstance()->_connection;
 
-        $stmt1 = $db->prepare("UPDATE Module SET Module.id = :newModuleId, Module.name = :newModuleName
-                               WHERE Module.name = :oldModuleName");
-        $stmt1->bindParam(':newModuleId', strtolower($newName), PDO::PARAM_STR);
-        $stmt1->bindParam(':newModuleName', strtoupper($newName), PDO::PARAM_STR);
-        $stmt1->bindParam(':oldModuleName', strtoupper($oldName), PDO::PARAM_STR);
-        $stmt1->execute();
+        $stmtUpdateModule = $db->prepare("UPDATE Module SET Module.id = :newModuleId, Module.name = :newModuleName
+                                          WHERE Module.name = :oldModuleName");
+        $stmtUpdateModule->bindParam(':newModuleId', strtolower($newName), PDO::PARAM_STR);
+        $stmtUpdateModule->bindParam(':newModuleName', strtoupper($newName), PDO::PARAM_STR);
+        $stmtUpdateModule->bindParam(':oldModuleName', strtoupper($oldName), PDO::PARAM_STR);
+        $stmtUpdateModule->execute();
 
-//        $stmt->execute(array(":newModuleId" => strtolower($newName),
-//                             ":newModuleName" => strtoupper($newName),
-//                             ":oldModuleName" => strtoupper($oldName),));
+//        $stmtUpdateModule->execute(array(":newModuleId" => strtolower($newName),
+//                                         ":newModuleName" => strtoupper($newName),
+//                                         ":oldModuleName" => strtoupper($oldName),));
 
-        $stmt2 = $db->prepare("SELECT Category.id FROM Category
-                               WHERE Category.idForeign = :oldCategoryIdForeign");
-        $stmt2->bindParam(':oldCategoryIdForeign', strtolower($oldName), PDO::PARAM_STR);
-        $stmt2->execute();
-//        $stmt2->execute(array(":oldCategoryIdForeign" => strtolower($oldName)));
-        $stmt2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+        $stmtSelectCategory = $db->prepare("SELECT Category.id FROM Category
+                                            WHERE Category.idForeign = :CategoryIdForeign");
+        $stmtSelectCategory->bindParam(':CategoryIdForeign', strtolower($oldName), PDO::PARAM_STR);
+        $stmtSelectCategory->execute();
+//        $stmtSelectCategory->execute(array(":CategoryIdForeign" => strtolower($oldName)));
+        $stmtSelectCategory = $stmtSelectCategory->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($stmt2 as $categoryId) {
+        foreach ($stmtSelectCategory as $categoryId) {
 
-            $stmt3 = $db->prepare("UPDATE Category SET Category.id = :newCategoryId, Category.idForeign = :newCategoryIdForeign
-                                   WHERE Category.idForeign = :oldCategoryIdForeign");
-            $stmt3->bindParam(':newCategoryId', str_replace(strtolower($oldName), strtolower($newName), $categoryId), PDO::PARAM_STR);
-            $stmt3->bindParam(':newCategoryIdForeign', strtolower($newName), PDO::PARAM_STR);
-            $stmt3->bindParam(':oldCategoryIdForeign', strtolower($oldName), PDO::PARAM_STR);
-            $stmt3->execute();
+            $stmtUpdateCategory = $db->prepare("UPDATE Category SET Category.id = :newCategoryId,
+                                                       Category.idForeign = :newCategoryIdForeign
+                                                WHERE Category.idForeign = :oldCategoryIdForeign");
+            $stmtUpdateCategory->bindParam(':newCategoryId',
+                                    str_replace(strtolower($oldName), strtolower($newName), $categoryId), PDO::PARAM_STR);
+            $stmtUpdateCategory->bindParam(':newCategoryIdForeign', strtolower($newName), PDO::PARAM_STR);
+            $stmtUpdateCategory->bindParam(':oldCategoryIdForeign', strtolower($oldName), PDO::PARAM_STR);
+            $stmtUpdateCategory->execute();
 
-//        $stmt->execute(array(":newCategoryId" => str_replace(strtolower($oldName), strtolower($newName), $categoryId),
-//                             ":newCategoryIdForeign" => strtolower($newName),
-//                             ":oldCategoryIdForeign" => strtolower($oldName),));
+//            $stmtUpdateCategory->execute(array(":newCategoryId" => str_replace(strtolower($oldName), strtolower($newName), $categoryId),
+//                                               ":newCategoryIdForeign" => strtolower($newName),
+//                                               ":oldCategoryIdForeign" => strtolower($oldName),));
 
-            $stmt4 = $db->prepare("SELECT Source.id FROM Source
-                                   WHERE Source.idForeign = :oldSourceIdForeign");
-            $stmt4->bindParam(':oldSourceIdForeign', $categoryId, PDO::PARAM_STR);
-            $stmt4->execute();
-//        $stmt4->execute(array(":oldSourceIdForeign" => $categoryId));
-            $stmt4 = $stmt4->fetchAll(PDO::FETCH_ASSOC);
+            $stmtSelectSource = $db->prepare("SELECT Source.id FROM Source
+                                              WHERE Source.idForeign = :SourceIdForeign");
+            $stmtSelectSource->bindParam(':SourceIdForeign', $categoryId, PDO::PARAM_STR);
+            $stmtSelectSource->execute();
+//            $stmtSelectSource->execute(array(":SourceIdForeign" => $categoryId));
+            $stmtSelectSource = $stmtSelectSource->fetchAll(PDO::FETCH_ASSOC);
 
-            foreach ($stmt4 as $sourceId) {
+            foreach ($stmtSelectSource as $sourceId) {
 
-                $stmt5 = $db->prepare("UPDATE Source SET Source.id = :newSourceId, Source.idForeign = :newSourceIdForeign
-                                       WHERE Source.idForeign = :oldSourceIdForeign");
-                $stmt5->bindParam(':newSourceId', str_replace(strtolower($oldName), strtolower($newName), $sourceId), PDO::PARAM_STR);
-                $stmt5->bindParam(':newSourceIdForeign', str_replace(strtolower($oldName), strtolower($newName), $categoryId), PDO::PARAM_STR);
-                $stmt5->bindParam(':oldSourceIdForeign', $categoryId, PDO::PARAM_STR);
-                $stmt5->execute();
+                $stmtUpdateSource = $db->prepare("UPDATE Source SET Source.id = :newSourceId, Source.idForeign = :newSourceIdForeign
+                                                  WHERE Source.idForeign = :oldSourceIdForeign");
+                $stmtUpdateSource->bindParam(':newSourceId', str_replace(strtolower($oldName), strtolower($newName), $sourceId), PDO::PARAM_STR);
+                $stmtUpdateSource->bindParam(':newSourceIdForeign', str_replace(strtolower($oldName), strtolower($newName), $categoryId), PDO::PARAM_STR);
+                $stmtUpdateSource->bindParam(':oldSourceIdForeign', $categoryId, PDO::PARAM_STR);
+                $stmtUpdateSource->execute();
 
-//        $stmt5->execute(array(":newSourceId" => str_replace(strtolower($oldName), strtolower($newName), $sourceId),
-//                             ":newSourceIdForeign" => str_replace(strtolower($oldName), strtolower($newName), $categoryId),
-//                             ":oldSourceIdForeign" => $categoryId,));
+//                $stmtUpdateSource->execute(array(":newSourceId" => str_replace(strtolower($oldName), strtolower($newName), $sourceId),
+//                                                 ":newSourceIdForeign" => str_replace(strtolower($oldName), strtolower($newName), $categoryId),
+//                                                 ":oldSourceIdForeign" => $categoryId,));
 
-                $stmt6 = $db->prepare("UPDATE Item SET Item.idForeign = :newItemIdForeign
-                                       WHERE Item.idForeign = :oldItemIdForeign");
-                $stmt6->bindParam(':newItemIdForeign', str_replace(strtolower($oldName), strtolower($newName), $sourceId), PDO::PARAM_STR);
-                $stmt6->bindParam(':oldItemIdForeign', $sourceId, PDO::PARAM_STR);
-                $stmt6->execute();
+                $stmtUdateItem = $db->prepare("UPDATE Item SET Item.idForeign = :newItemIdForeign
+                                               WHERE Item.idForeign = :oldItemIdForeign");
+                $stmtUdateItem->bindParam(':newItemIdForeign', str_replace(strtolower($oldName), strtolower($newName), $sourceId), PDO::PARAM_STR);
+                $stmtUdateItem->bindParam(':oldItemIdForeign', $sourceId, PDO::PARAM_STR);
+                $stmtUdateItem->execute();
 
-//        $stmt6->execute(array(":newItemIdForeign" => str_replace(strtolower($oldName), strtolower($newName), $sourceId),
-//                              ":oldItemIdForeign" => $sourceId,));
+//                $stmtUdateItem->execute(array(":newItemIdForeign" => str_replace(strtolower($oldName), strtolower($newName), $sourceId),
+//                                              ":oldItemIdForeign" => $sourceId,));
 
             }
         }
     }
 
     public function deleteModuleModel($name) {
+
+        $db = DBConnection::getInstance()->_connection;
+
+        $stmtDeleteModule = $db->prepare("DELETE FROM Module WHERE Module.name = :ModuleName");
+        $stmtDeleteModule->bindParam(':ModuleName', strtolower($name), PDO::PARAM_STR);
+        $stmtDeleteModule->execute();
+//        $stmtDeleteModule->execute(array(":ModuleName" => $name));
+
+        $stmtSelectCategory = $db->prepare("SELECT Category.id FROM Category
+                                            WHERE Category.idForeign = :CategoryIdForeign");
+        $stmtSelectCategory->bindParam(':CategoryIdForeign', strtolower($name), PDO::PARAM_STR);
+        $stmtSelectCategory->execute();
+//        $stmtSelectCategory->execute(array(":CategoryIdForeign" => strtolower($name)));
+        $stmtSelectCategory = $stmtSelectCategory->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach($stmtSelectCategory as $categoryId) {
+
+            $stmtDeleteCategory = $db->prepare("DELETE FROM Module WHERE Module.name = :ModuleName");
+            $stmtDeleteModule->bindParam(':ModuleName', strtolower($name), PDO::PARAM_STR);
+            $stmtDeleteModule->execute();
+//            $stmtDeleteModule->execute(array(":ModuleName" => $name));
+
+        }
 
     }
 }
