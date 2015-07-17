@@ -3,12 +3,9 @@
 class ModuleController {
 
     public function createModuleModel($name) {
-
         $objModuleModel = new ModuleModel(strtolower($name), strtoupper($name));
         return $objModuleModel;
-
     }
-
     public function insertModuleModel(ModuleModel $objModuleModel) {
 
         $db = DBConnection::getInstance()->_connection;
@@ -20,7 +17,6 @@ class ModuleController {
 //        $stmt->execute(array(":idModule" => $objModuleModel->getId(),
 //                             ":nameModule" => $objModuleModel->getName()));
     }
-
     public function selectModuleModel($name) {
 
         $db = DBConnection::getInstance()->_connection;
@@ -35,7 +31,6 @@ class ModuleController {
 
         return $stmt;
     }
-
     public function updateModuleModel($oldName, $newName) {
 
         $db = DBConnection::getInstance()->_connection;
@@ -105,8 +100,8 @@ class ModuleController {
             }
         }
     }
-
-    public function deleteModuleModel($name) {
+    public function deleteModuleModel($name)
+    {
 
         $db = DBConnection::getInstance()->_connection;
 
@@ -122,14 +117,32 @@ class ModuleController {
 //        $stmtSelectCategory->execute(array(":CategoryIdForeign" => strtolower($name)));
         $stmtSelectCategory = $stmtSelectCategory->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach($stmtSelectCategory as $categoryId) {
+        foreach ($stmtSelectCategory as $categoryId) {
 
             $stmtDeleteCategory = $db->prepare("DELETE FROM Category WHERE Category.id = :CategoryId");
             $stmtDeleteCategory->bindParam(':CategoryId', $categoryId, PDO::PARAM_STR);
             $stmtDeleteCategory->execute();
-//            $stmtDeleteModule->execute(array(":CategoryId" => $categoryId));
+//            $stmtDeleteCategory->execute(array(":CategoryId" => $categoryId));
 
+            $stmtSelectSource = $db->prepare("SELECT Source.id FROM Source
+                                              WHERE Source.idForeign = :SourceIdForeign");
+            $stmtSelectSource->bindParam(':SourceIdForeign', $categoryId, PDO::PARAM_STR);
+            $stmtSelectSource->execute();
+//            $stmtSelectSource->execute(array(":SourceIdForeign" => $categoryId));
+            $stmtSelectSource = $stmtSelectSource->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($stmtSelectSource as $sourceId) {
+
+                $stmtDeleteSource = $db->prepare("DELETE FROM Source WHERE Source.id = :SourceId");
+                $stmtDeleteSource->bindParam(':SourceId', $sourceId, PDO::PARAM_STR);
+                $stmtDeleteSource->execute();
+//                $stmtDeleteSource->execute(array(":SourceId" => $sourceId));
+
+                $stmtDeleteItem = $db->prepare("DELETE FROM Item WHERE Item.idForeign = :ItemIdForeign");
+                $stmtDeleteItem->bindParam(':ItemIdForeign', $sourceId, PDO::PARAM_STR);
+                $stmtDeleteItem->execute();
+//                $stmtDeleteItem->execute(array(":ItemIdForeign" => $sourceId));
+            }
         }
-
     }
 }
