@@ -124,10 +124,10 @@ class ModuleController {
 
         foreach($stmtSelectCategory as $categoryId) {
 
-            $stmtDeleteCategory = $db->prepare("DELETE FROM Module WHERE Module.name = :ModuleName");
-            $stmtDeleteModule->bindParam(':ModuleName', strtolower($name), PDO::PARAM_STR);
-            $stmtDeleteModule->execute();
-//            $stmtDeleteModule->execute(array(":ModuleName" => $name));
+            $stmtDeleteCategory = $db->prepare("DELETE FROM Category WHERE Category.id = :CategoryId");
+            $stmtDeleteCategory->bindParam(':CategoryId', $categoryId, PDO::PARAM_STR);
+            $stmtDeleteCategory->execute();
+//            $stmtDeleteModule->execute(array(":CategoryId" => $categoryId));
 
         }
 
