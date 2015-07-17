@@ -87,13 +87,21 @@ class ModuleController {
                 $stmt5->bindParam(':oldSourceIdForeign', $categoryId, PDO::PARAM_STR);
                 $stmt5->execute();
 
-//        $stmt->execute(array(":newSourceId" => str_replace(strtolower($oldName), strtolower($newName), $sourceId),
+//        $stmt5->execute(array(":newSourceId" => str_replace(strtolower($oldName), strtolower($newName), $sourceId),
 //                             ":newSourceIdForeign" => str_replace(strtolower($oldName), strtolower($newName), $categoryId),
 //                             ":oldSourceIdForeign" => $categoryId,));
+
+                $stmt6 = $db->prepare("UPDATE Item SET Item.idForeign = :newItemIdForeign
+                                       WHERE Item.idForeign = :oldItemIdForeign");
+                $stmt6->bindParam(':newItemIdForeign', str_replace(strtolower($oldName), strtolower($newName), $sourceId), PDO::PARAM_STR);
+                $stmt6->bindParam(':oldItemIdForeign', $sourceId, PDO::PARAM_STR);
+                $stmt6->execute();
+
+//        $stmt6->execute(array(":newItemIdForeign" => str_replace(strtolower($oldName), strtolower($newName), $sourceId),
+//                              ":oldItemIdForeign" => $sourceId,));
+
             }
         }
-
-
     }
 
     public function deleteModuleModel($name) {
