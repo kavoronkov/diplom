@@ -88,14 +88,13 @@ class ItemController {
         }
     }
 
-    public function selectItemModel(ModuleModel $objModuleModel, CategoryModel $objCategoryModel,
-                                    SourceModel $objSourceModel, $count, $lastId) {
+    public function selectItemModel(stdClass $objStdClass) {
 
         $db = DBConnection::getInstance()->_connection;
 
-        $check = $db->prepare("SELECT Item.id, Item.item, Item.link,
-                                    Item.description, Item.image, Item.pubDate, Item.idForeign
-                                   FROM Item ORDER BY Item.pubDate DESC LIMIT 1");
+        $check = $db->prepare("SELECT * FROM Item
+                               WHERE Item.idForeign = :itemIdForeign
+                               ORDER BY Item.pubDate DESC LIMIT :limit");
         $check->execute();
 
         $check = $check->fetchAll(PDO::FETCH_ASSOC);
