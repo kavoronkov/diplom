@@ -38,7 +38,7 @@ class Application {
         if(is_array(self::$mainCfg["path"]) && !empty(self::$mainCfg["path"])) {
             $includePath = "";
             foreach(self::$mainCfg["path"] as $path) {
-                $includePath .= PATH_SEPARATOR . $path; }
+                $includePath .= PATH_SEPARATOR . $_SERVER["DOCUMENT_ROOT"].DIRECTORY_SEPARATOR.$path; }
             set_include_path(get_include_path() . $includePath);
             return true;
         }else {

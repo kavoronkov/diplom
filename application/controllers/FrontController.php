@@ -14,7 +14,7 @@ class FrontController {
 
         $request = explode("/", $request);
 
-        $ctrlName = (!empty($request[0])) ? $request[0] . "Controller" : "IndexController";
+        $ctrlName = (!empty($request[0])) ? ucfirst($request[0]) . "Controller" : "IndexController";
         $actionName = (!empty($request[1])) ? $request[1] . "Action" : "indexAction";
 
         //echo "ctrl = ".$ctrlName;

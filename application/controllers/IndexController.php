@@ -6,6 +6,8 @@ class IndexController implements IController {
 
         return RenderView::render("index");
 
+        echo "<h1> HHH HHH</h1>";
+
 //        $objModuleController = new ModuleController();
 //        //$obj = $objModuleController->createModuleModel("news");
 //        $objModuleController->insertModuleModel($objModuleController->createModuleModel("news"));

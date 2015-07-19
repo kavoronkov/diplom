@@ -2,9 +2,9 @@
 
 class AutoLoader {
     static public function classLoader($className) {
-        $classFile = str_ireplace("\\",DIRECTORY_SEPARATOR,$className);
+        $classFile = str_replace("\\",DIRECTORY_SEPARATOR,$className);
         if(self::fileExists($classFile,"php")) {
-            spl_autoload($className);
+            require_once $className.".php";
         }else {
             echo "NO file!!!";
         }

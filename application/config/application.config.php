@@ -19,7 +19,7 @@ return array(
     ),
 
     "autoload" => array(
-        "class" => "Autoloader",
+        "class" => "AutoLoader",
         "method"=> "classLoader"
     )
 );
