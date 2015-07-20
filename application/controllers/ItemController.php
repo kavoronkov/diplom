@@ -41,7 +41,7 @@ class ItemController {
         return false;
     }
 
-    private function checkItemModelDB($db) {
+    private function checkItemModelDB(DBConnection $db) {
         $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.sourceId
                                FROM Item ORDER BY Item.pubDate DESC LIMIT 1");
         $check->execute();
