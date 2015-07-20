@@ -11,7 +11,7 @@ class AutoLoader {
     }
 
     static private function fileExists($file,$extension) {
-        $paths = explode(PATH_SEPARATOR,get_include_path());
+        $paths = explode(PATH_SEPARATOR, get_include_path());
         foreach($paths as $path) {
             if(file_exists($path.DIRECTORY_SEPARATOR.$file.".".$extension)) {
                 return true;
