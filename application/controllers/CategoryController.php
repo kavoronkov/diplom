@@ -20,7 +20,7 @@ class CategoryController
 //                             ":categoryName" => $objCategoryModel->getName(),
 //                             ":moduleId" => $objCategoryModel->getModuleId()));
     }
-    public function selectCategoryModel($moduleId)
+    public function selectCategoryModel($categoryId, $moduleId)
     {
         $db = DBConnection::getInstance()->_connection;
         $stmt = $db->prepare("SELECT Module.id, Module.name
