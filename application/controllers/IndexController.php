@@ -4,9 +4,9 @@ class IndexController implements IController {
 
     public function indexAction() {
 
-        //return RenderView::render("index");
+//        return RenderView::render("index");
 
-        echo "<h1> HHH HHH</h1>";
+//        echo "<h1> HHH HHH</h1>";
 
 //        $objModuleController = new ModuleController();
 //        //$obj = $objModuleController->createModuleModel("news");
@@ -16,8 +16,8 @@ class IndexController implements IController {
 //        //$obj = $objCategoryController->createCategoryModel($objModuleController, "politics");
 //        $objCategoryController->insertCategoryModel($objCategoryController->createCategoryModel($objModuleController, "politics"));
 //
-//        $objItemController = new ItemController();
-//        $objItemController->parseInsertLiga(new SourceModel());
+        $objItemController = new ItemController();
+        $objItemController->parseInsertLiga(new SourceModel());
     }
 
     public function testAction() {
