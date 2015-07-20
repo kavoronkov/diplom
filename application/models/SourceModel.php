@@ -11,21 +11,21 @@ class SourceModel {
     protected $moduleId;    // foreign key / внешний ключ
     protected $categoryId;  // foreign key / внешний ключ
 
-//    function __construct() {
-//
-//    }
+    function __construct() {
 
-    function __construct($id, $name, $url, $xml, $title, $description, $moduleId, $categoryId)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->url = $url;
-        $this->xml = $xml;
-        $this->title = $title;
-        $this->description = $description;
-        $this->moduleId = $moduleId;
-        $this->categoryId = $categoryId;
     }
+
+//    function __construct($id, $name, $url, $xml, $title, $description, $moduleId, $categoryId)
+//    {
+//        $this->id = $id;
+//        $this->name = $name;
+//        $this->url = $url;
+//        $this->xml = $xml;
+//        $this->title = $title;
+//        $this->description = $description;
+//        $this->moduleId = $moduleId;
+//        $this->categoryId = $categoryId;
+//    }
 
     public function getId()
     {

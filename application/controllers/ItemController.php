@@ -21,7 +21,7 @@ class ItemController {
                 case "description" : $objItemModel->setDescription($itemProperty->__toString()); break;
                 case "enclosure" : $objItemModel->setImage($itemProperty->attributes()->url->__toString()); break;
                 case "pubDate" : $objItemModel->setPubDate($itemProperty->__toString());
-                                 $objItemModel->setIdForeign($objSourceModel->getId());
+                                 $objItemModel->setSourceId($objSourceModel->getId());
                                  break;
                 default : echo "ERROR"; break;
             }
@@ -35,13 +35,13 @@ class ItemController {
 
         if( is_array($check) && $objItemModel->getLink() == $check["link"] &&
                                 $objItemModel->getPubDate() == $check["pubDate"] &&
-                                $objItemModel->getIdForeign() == $check["sourceId"]
+                                $objItemModel->getSourceId() == $check["sourceId"]
         ) { return true; }
 
         return false;
     }
 
-    private function checkItemModelDB(DBConnection $db) {
+    private function checkItemModelDB($db) {
         $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.sourceId
                                FROM Item ORDER BY Item.pubDate DESC LIMIT 1");
         $check->execute();
@@ -78,13 +78,12 @@ class ItemController {
                                   VALUES (:id, :name, :link, :description, :image, :pubDate, :sourceId)");
 
             $stmt->execute(array(":id" => $objItemModel->getId(),
-                                 ":name" => $objItemModel->getItem(),
+                                 ":name" => $objItemModel->getName(),
                                  ":link" => $objItemModel->getLink(),
                                  ":description" => $objItemModel->getDescription(),
                                  ":image" => $objItemModel->getImage(),
                                  ":pubDate" => $objItemModel->getPubDate(),
-                                 ":sourceId" => $objItemModel->getIdForeign()));
-
+                                 ":sourceId" => $objItemModel->getSourceId()));
         }
     }
 
