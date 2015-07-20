@@ -35,14 +35,14 @@ class ItemController {
 
         if( is_array($check) && $objItemModel->getLink() == $check["link"] &&
                                 $objItemModel->getPubDate() == $check["pubDate"] &&
-                                $objItemModel->getIdForeign() == $check["idSource"]
+                                $objItemModel->getIdForeign() == $check["sourceId"]
         ) { return true; }
 
         return false;
     }
 
     private function checkItemModelDB(DBConnection $db) {
-        $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.idSource
+        $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.sourceId
                                FROM Item ORDER BY Item.pubDate DESC LIMIT 1");
         $check->execute();
 
@@ -74,8 +74,8 @@ class ItemController {
 
             if( $this->checkItemModel($objItemModel, $check[0]) ) { break; }
 
-            $stmt = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate, idSource)
-                                  VALUES (:id, :name, :link, :description, :image, :pubDate, :idSource)");
+            $stmt = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate, sourceId)
+                                  VALUES (:id, :name, :link, :description, :image, :pubDate, :sourceId)");
 
             $stmt->execute(array(":id" => $objItemModel->getId(),
                                  ":name" => $objItemModel->getItem(),
@@ -83,7 +83,7 @@ class ItemController {
                                  ":description" => $objItemModel->getDescription(),
                                  ":image" => $objItemModel->getImage(),
                                  ":pubDate" => $objItemModel->getPubDate(),
-                                 ":idSource" => $objItemModel->getIdForeign()));
+                                 ":sourceId" => $objItemModel->getIdForeign()));
 
         }
     }
@@ -93,7 +93,7 @@ class ItemController {
         $db = DBConnection::getInstance()->_connection;
 
         $check = $db->prepare("SELECT * FROM Item
-                               WHERE Item.idForeign = :itemIdForeign
+                               WHERE Item.moduleId = :itemIdForeign
                                ORDER BY Item.pubDate DESC LIMIT :limit");
         $check->execute();
 

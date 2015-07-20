@@ -5,17 +5,22 @@ class ItemModel {
     static public $counter;
 
     protected $id;          // primary key / первичный ключ
-    protected $item;        // item name / название ресурса
+    protected $name;        // item name / название ресурса
     protected $link;        // item url / url ресурса
     protected $description; // item description // краткое описание ресурса
     protected $image;       // image url / url изображения
     protected $pubDate;     // item pubDate // дата публикации
     protected $text;        // item content / подробное описание ресурса
-    protected $idForeign;   // foreign key / внешний ключ
+    protected $moduleId;    // foreign key / внешний ключ
+    protected $categoryId;  // foreign key / внешний ключ
+    protected $sourceId;    // foreign key / внешний ключ
 
-    function __construct() { }
 
-//    function __construct($id, $item, $link, $description, $image, $pubDate, $text, $idForeign)
+    function __construct() {
+
+    }
+
+//    function __construct($id, $item, $link, $description, $image, $pubDate, $text, $moduleId, $categoryId, $sourceId)
 //    {
 //        $this->id = $id;
 //        $this->item = $item;
@@ -24,7 +29,9 @@ class ItemModel {
 //        $this->image = $image;
 //        $this->pubDate = $pubDate;
 //        $this->text = $text;
-//        $this->idForeign = $idForeign;
+//        $this->moduleId = $moduleId;
+//        $this->categoryId = $categoryId;
+//        $this->sourceId = $sourceId;
 //    }
 
     public function getId()
@@ -37,14 +44,14 @@ class ItemModel {
         $this->id = $id;
     }
 
-    public function getItem()
+    public function getName()
     {
-        return $this->item;
+        return $this->name;
     }
 
-    public function setItem($item)
+    public function setItem($name)
     {
-        $this->item = $item;
+        $this->name = $name;
     }
 
     public function getLink()
@@ -97,15 +104,37 @@ class ItemModel {
         $this->text = $text;
     }
 
-    public function getIdForeign()
+    public function getModuleId()
     {
-        return $this->idForeign;
+        return $this->moduleId;
     }
 
-    public function setIdForeign($idForeign)
+    public function setModuleId($moduleId)
     {
-        $this->idForeign = $idForeign;
+        $this->moduleId = $moduleId;
     }
+
+    public function getCategoryId()
+    {
+        return $this->categoryId;
+    }
+
+    public function setCategoryId($categoryId)
+    {
+        $this->categoryId = $categoryId;
+    }
+
+    public function getSourceId()
+    {
+        return $this->sourceId;
+    }
+
+    public function setSourceId($sourceId)
+    {
+        $this->sourceId = $sourceId;
+    }
+
+
 
 
 }

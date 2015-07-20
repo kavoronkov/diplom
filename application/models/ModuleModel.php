@@ -3,7 +3,11 @@
 class ModuleModel {
 
     protected $id;   // primary key / первичный ключ
-    protected $name; // category name / название категории
+    protected $name; // module name / название модуля
+
+//    function __construct() {
+//
+//    }
 
     function __construct($id, $name)
     {
@@ -11,7 +15,8 @@ class ModuleModel {
         $this->name = $name;
     }
 
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
 

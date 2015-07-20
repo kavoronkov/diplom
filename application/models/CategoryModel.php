@@ -3,14 +3,18 @@
 class CategoryModel {
 
     protected $id;        // primary key / первичный ключ
-    protected $name;      // name news category/ название новостной категории
-    protected $idForeign; // foreign key / внешний ключ
+    protected $name;      // category name / название категории
+    protected $moduleId;  // foreign key / внешний ключ
 
-    function __construct($id, $name, $idForeign)
+//    function __construct() {
+//
+//    }
+
+    function __construct($id, $name, $moduleId)
     {
         $this->id = $id;
         $this->name = $name;
-        $this->idForeign = $idForeign;
+        $this->moduleId = $moduleId;
     }
 
     public function getId()
@@ -33,14 +37,14 @@ class CategoryModel {
         $this->name = $name;
     }
 
-    public function getIdForeign()
+    public function getModuleId()
     {
-        return $this->idForeign;
+        return $this->moduleId;
     }
 
-    public function setIdForeign($idForeign)
+    public function setModuleId($moduleId)
     {
-        $this->idForeign = $idForeign;
+        $this->moduleId = $moduleId;
     }
 
 }

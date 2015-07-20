@@ -4,7 +4,7 @@ class IndexController implements IController {
 
     public function indexAction() {
 
-        return RenderView::render("index");
+        //return RenderView::render("index");
 
         echo "<h1> HHH HHH</h1>";
 

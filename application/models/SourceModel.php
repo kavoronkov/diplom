@@ -8,13 +8,14 @@ class SourceModel {
     protected $xml;         // source xml / xml ресурса
     protected $title;       // source title / краткое описание ресурса
     protected $description; // source description // подробное описание ресурса
-    protected $idForeign;   // foreign key / внешний ключ
+    protected $moduleId;    // foreign key / внешний ключ
+    protected $categoryId;  // foreign key / внешний ключ
 
 //    function __construct() {
 //
 //    }
 
-    function __construct($id, $name, $url, $xml, $title, $description, $idForeign)
+    function __construct($id, $name, $url, $xml, $title, $description, $moduleId, $categoryId)
     {
         $this->id = $id;
         $this->name = $name;
@@ -22,7 +23,8 @@ class SourceModel {
         $this->xml = $xml;
         $this->title = $title;
         $this->description = $description;
-        $this->idForeign = $idForeign;
+        $this->moduleId = $moduleId;
+        $this->categoryId = $categoryId;
     }
 
     public function getId()
@@ -85,14 +87,24 @@ class SourceModel {
         $this->description = $description;
     }
 
-    public function getIdForeign()
+    public function getModuleId()
     {
-        return $this->idForeign;
+        return $this->moduleId;
     }
 
-    public function setIdForeign($idForeign)
+    public function setModuleId($moduleId)
     {
-        $this->idForeign = $idForeign;
+        $this->moduleId = $moduleId;
+    }
+
+    public function getCategoryId()
+    {
+        return $this->categoryId;
+    }
+
+    public function setCategoryId($categoryId)
+    {
+        $this->categoryId = $categoryId;
     }
 
 
