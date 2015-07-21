@@ -20,8 +20,7 @@ class ModuleController
     public function selectModuleModel($moduleId)
     {
         $db = DBConnection::getInstance()->_connection;
-        $stmt = $db->prepare("SELECT Module.id, Module.name
-                              FROM Module WHERE Module.id = . :moduleId ");
+        $stmt = $db->prepare("SELECT * FROM Module WHERE Module.id = . :moduleId ");
         $stmt->bindParam(':moduleId', strtolower($moduleId), PDO::PARAM_STR);
         $stmt->execute();
 //        $stmt->execute(array(":moduleId" => strtolower($moduleId)));
