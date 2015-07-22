@@ -51,28 +51,50 @@ class SourceController {
         $stmtSelectSource = $stmtSelectSource->fetchAll(PDO::FETCH_ASSOC);
         return $stmtSelectSource;
     }
-    public function updateSourceModel($id, $name, $url, $xml, $title, $description, $moduleId, $categoryId)
+    public function updateSourceModel($sourceId, $sourceName, $sourceUrl, $sourceXml, $sourceTitle, $sourceDescription,
+                                      $moduleId, $categoryId)
     {
         $db = DBConnection::getInstance()->_connection;
-        $stmtUpdateCategory = $db->prepare("UPDATE Category SET Category.name = :categoryName
-                                            WHERE Category.id = . :categoryId AND Category.moduleId = :moduleId");
-        $stmtUpdateCategory->bindParam(':categoryName', strtolower($categoryName), PDO::PARAM_STR);
-        $stmtUpdateCategory->bindParam(':categoryId', strtolower($categoryId), PDO::PARAM_STR);
-        $stmtUpdateCategory->bindParam(':moduleId', strtolower($moduleId), PDO::PARAM_STR);
-        $stmtUpdateCategory->execute();
-//        $stmt->execute(array(':categoryName', strtolower($categoryName),
-//                             ':categoryId', strtolower($categoryId),
-//                             ':moduleId', strtolower($moduleId)));
+        $stmtUpdateSource = $db->prepare("UPDATE Source
+                                            SET Source.name = :sourceName,
+                                                Source.url = :sourceUrl,
+                                                Source.xml = :sourceXml,
+                                                Source.title = :sourceTitle,
+                                                Source.description = :sourceDescription
+                                            WHERE Source.id = . :sourceId
+                                            AND Source.categoryId = :categoryId
+                                            AND Source.moduleId = :moduleId ");
+        $stmtUpdateSource->bindParam(':sourceName', strtolower($sourceName), PDO::PARAM_STR);
+        $stmtUpdateSource->bindParam(':sourceUrl', strtolower($sourceUrl), PDO::PARAM_STR);
+        $stmtUpdateSource->bindParam(':sourceXml', strtolower($sourceXml), PDO::PARAM_STR);
+        $stmtUpdateSource->bindParam(':sourceTitle', strtolower($sourceTitle), PDO::PARAM_STR);
+        $stmtUpdateSource->bindParam(':sourceDescription', strtolower($sourceDescription), PDO::PARAM_STR);
+        $stmtUpdateSource->bindParam(':sourceId', strtolower($sourceId), PDO::PARAM_STR);
+        $stmtUpdateSource->bindParam(':categoryId', strtolower($categoryId), PDO::PARAM_STR);
+        $stmtUpdateSource->bindParam(':moduleId', strtolower($moduleId), PDO::PARAM_STR);
+        $stmtUpdateSource->execute();
+//        $stmtUpdateSource->execute(array(':sourceName', strtolower($sourceName),
+//                                         ':sourceUrl', strtolower($sourceUrl),
+//                                         ':sourceXml', strtolower($sourceXml),
+//                                         ':sourceTitle', strtolower($sourceTitle),
+//                                         ':sourceDescription', strtolower($sourceDescription),
+//                                         ':sourceId', strtolower($sourceId),
+//                                         ':categoryId', strtolower($categoryId),
+//                                         ':moduleId', strtolower($moduleId)));
     }
-//    public function deleteCategoryModel($categoryId, $moduleId)
-//    {
-//        $db = DBConnection::getInstance()->_connection;
-//        $stmtDeleteCategory = $db->prepare("DELETE FROM Category
-//                                          WHERE Category.id = . :categoryId AND Category.moduleId = :moduleId");
-//        $stmtDeleteCategory->bindParam(':categoryId', strtolower($categoryId), PDO::PARAM_STR);
-//        $stmtDeleteCategory->bindParam(':moduleId', strtolower($moduleId), PDO::PARAM_STR);
-//        $stmtDeleteCategory->execute();
-////        $stmtDeleteCategory->execute(array(':categoryId', strtolower($categoryId),
-////                                           ':moduleId', strtolower($moduleId)));
-//    }
+    public function deleteSourceModel($sourceId, $categoryId, $moduleId)
+    {
+        $db = DBConnection::getInstance()->_connection;
+        $stmtDeleteSource = $db->prepare("DELETE FROM Source
+                                          WHERE Source.id = . :sourceId
+                                          AND Source.categoryId = :categoryId
+                                          AND Source.moduleId = :moduleId ");
+        $stmtDeleteSource->bindParam(':sourceId', strtolower($sourceId), PDO::PARAM_STR);
+        $stmtDeleteSource->bindParam(':categoryId', strtolower($categoryId), PDO::PARAM_STR);
+        $stmtDeleteSource->bindParam(':moduleId', strtolower($moduleId), PDO::PARAM_STR);
+        $stmtDeleteSource->execute();
+//        $stmtDeleteSource->execute(array(':sourceId', strtolower($sourceId),
+//                                         ':categoryId', strtolower($categoryId),
+//                                         ':moduleId', strtolower($moduleId)));
+    }
 }
