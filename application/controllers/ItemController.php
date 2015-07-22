@@ -7,7 +7,6 @@ class ItemController {
         $id = date("YmdHis") . (1000 + ItemModel::$counter);
         $objItemModel->setId($id);
     }
-
     private function fillItemModel(ItemModel $objItemModel, $item, SourceModel $objSourceModel) {
 
         $this->createIdItemModel($objItemModel);
@@ -30,7 +29,6 @@ class ItemController {
 
         return $objItemModel;
     }
-
     private function checkItemModel(ItemModel $objItemModel, $check) {
 
         if( is_array($check) && $objItemModel->getLink() == $check["link"] &&
@@ -40,7 +38,6 @@ class ItemController {
 
         return false;
     }
-
     private function checkItemModelDB(DBConnection $db) {
         $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.sourceId
                                FROM Item ORDER BY Item.pubDate DESC LIMIT 1");
@@ -50,14 +47,12 @@ class ItemController {
 
         return $check;
     }
-
     private function simplexmlSourceModel(SourceModel $objSourceModel) {
 //        $sxml = simplexml_load_file($objSourceModel->getXml());
         $sxml = simplexml_load_file("http://news.liga.net/politics/rss.xml");
         $sxmlItem = $sxml->xpath("/rss/channel/item");
         return $sxmlItem;
     }
-
     public function parseInsertLiga(SourceModel $objSourceModel) {
 
         $db = DBConnection::getInstance()->_connection;
@@ -86,7 +81,6 @@ class ItemController {
                                  ":sourceId" => $objItemModel->getSourceId()));
         }
     }
-
     public function selectItemModel(stdClass $objStdClass) {
 
         $db = DBConnection::getInstance()->_connection;

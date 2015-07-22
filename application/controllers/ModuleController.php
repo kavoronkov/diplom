@@ -10,22 +10,22 @@ class ModuleController
     public function insertModuleModel(ModuleModel $objModuleModel)
     {
         $db = DBConnection::getInstance()->_connection;
-        $stmt = $db->prepare("INSERT INTO Module (id, name) VALUES (:moduleId, :moduleName)");
-        $stmt->bindParam(':moduleId', strtolower($objModuleModel->getId()), PDO::PARAM_STR);
-        $stmt->bindParam(':moduleName', strtolower($objModuleModel->getName()), PDO::PARAM_STR);
-        $stmt->execute();
-//        $stmt->execute(array(":moduleId" => strtolower($objModuleModel->getId()),
-//                             ":moduleName" => strtolower($objModuleModel->getName())));
+        $stmtInsertModule = $db->prepare("INSERT INTO Module (id, name) VALUES (:moduleId, :moduleName)");
+        $stmtInsertModule->bindParam(':moduleId', strtolower($objModuleModel->getId()), PDO::PARAM_STR);
+        $stmtInsertModule->bindParam(':moduleName', strtolower($objModuleModel->getName()), PDO::PARAM_STR);
+        $stmtInsertModule->execute();
+//        $stmtInsertModule->execute(array(":moduleId" => strtolower($objModuleModel->getId()),
+//                                         ":moduleName" => strtolower($objModuleModel->getName())));
     }
     public function selectModuleModel($moduleId)
     {
         $db = DBConnection::getInstance()->_connection;
-        $stmt = $db->prepare("SELECT * FROM Module WHERE Module.id = . :moduleId ");
-        $stmt->bindParam(':moduleId', strtolower($moduleId), PDO::PARAM_STR);
-        $stmt->execute();
-//        $stmt->execute(array(":moduleId" => strtolower($moduleId)));
-        $stmt = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $stmt;
+        $stmtSelectModule = $db->prepare("SELECT * FROM Module WHERE Module.id = . :moduleId ");
+        $stmtSelectModule->bindParam(':moduleId', strtolower($moduleId), PDO::PARAM_STR);
+        $stmtSelectModule->execute();
+//        $stmtSelectModule->execute(array(":moduleId" => strtolower($moduleId)));
+        $stmtSelectModule = $stmtSelectModule->fetchAll(PDO::FETCH_ASSOC);
+        return $stmtSelectModule;
     }
     public function updateModuleModel($moduleId, $moduleName)
     {
