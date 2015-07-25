@@ -1,6 +1,6 @@
 <?php
 
-include "application/Application.php";
+require_once "application/Application.php";
 
 $fc = Application::getInstance() -> init();
 

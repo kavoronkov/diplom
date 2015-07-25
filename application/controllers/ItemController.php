@@ -38,7 +38,7 @@ class ItemController {
 
         return false;
     }
-    private function checkItemModelDB(DBConnection $db) {
+    private function checkItemModelDB($db) {
         $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.sourceId
                                FROM Item ORDER BY Item.pubDate DESC LIMIT 1");
         $check->execute();
@@ -85,11 +85,10 @@ class ItemController {
 
         $db = DBConnection::getInstance()->_connection;
 
-        $check = $db->prepare("SELECT * FROM Item
-                               WHERE Item.moduleId = :itemIdForeign
-                               ORDER BY Item.pubDate DESC LIMIT :limit");
+        $check = $db->prepare("SELECT * FROM Item");
         $check->execute();
 
         $check = $check->fetchAll(PDO::FETCH_ASSOC);
+        return $check;
     }
 }
