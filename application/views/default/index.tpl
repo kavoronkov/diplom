@@ -23,14 +23,12 @@
                     console.log(data);
                 }
             });
-
         }
     </script>
 </head>
 
 <body>
     <button type="button" onclick="sendTestJSON();">Test</button>
-
 </body>
 
 </html>
