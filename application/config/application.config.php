@@ -8,7 +8,7 @@ return array(
         "modules" => "modules",
         "core" => "core",
         "patterns" => "core/patterns",
-        "templates" => "application/views/default"
+        "templates" => "application/views/default/"
     ),
 
     "dbconnection" => array(

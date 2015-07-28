@@ -3,8 +3,8 @@
 class IndexController implements IController {
 
     public function indexAction() {
-
-//        return RenderView::render("index");
+        $r = new RenderView();
+        return $r->render("index");
 
 //        echo "<h1> HHH HHH</h1>";
 
@@ -21,14 +21,15 @@ class IndexController implements IController {
     }
 
     public function testAction() {
+//        if($_SERVER["REQUEST_METHOD"])
 
         $json = file_get_contents("php://input");
         $o = json_decode($json);
-//        var_dump($o);
 
-        $o->module = "no module like " . $o->module;
-
-        echo json_encode($o);
+        $objItemController = new ItemController();
+        $objItemController->parseInsertLiga(new SourceModel());
+        $resp = $objItemController->selectItemModel($o);
+        echo json_encode($resp);
 
 
 //        echo '{"resp":"URA"}';
