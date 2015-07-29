@@ -4,8 +4,9 @@ class SourceController {
 
     public function createSourceModel($name, $url, $xml, $title, $description, $moduleId, $categoryId)
     {
-        $objSourceModel = new SourceModel(strtolower($name), strtolower($name), $url, $xml,
-                                          $title, $description, strtolower($moduleId), strtolower($categoryId));
+        $objSourceModel = new SourceModel(strtolower($name), strtolower($name), strtolower($url), strtolower($xml),
+                                          strtolower($title), strtolower($description),
+                                          strtolower($moduleId), strtolower($categoryId));
         return $objSourceModel;
     }
     public function insertSourceModel(SourceModel $objSourceModel) {

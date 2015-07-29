@@ -3,8 +3,8 @@
 class IndexController implements IController {
 
     public function indexAction() {
-        $r = new RenderView();
-        return $r->render("index");
+//        $r = new RenderView();
+//        return $r->render("index");
 
 //        echo "<h1> HHH HHH</h1>";
 
@@ -32,7 +32,7 @@ class IndexController implements IController {
         echo json_encode($resp);
 
 
-//        echo '{"resp":"URA"}';
+        echo "URA";
     }
 
 }

@@ -15,14 +15,14 @@ class ItemController {
 
             switch($itemProperty->getName())
             {
-                case "title" : $objItemModel->setItem($itemProperty->__toString()); break;
-                case "link" : $objItemModel->setLink($itemProperty->__toString()); break;
-                case "description" : $objItemModel->setDescription($itemProperty->__toString()); break;
-                case "enclosure" : $objItemModel->setImage($itemProperty->attributes()->url->__toString()); break;
-                case "pubDate" : $objItemModel->setPubDate($itemProperty->__toString());
-                                 $objItemModel->setSourceId($sourceId);
-                                 $objItemModel->setCategoryId($categoryId);
-                                 $objItemModel->setModuleId($moduleId);
+                case "title" : $objItemModel->setItem(strtolower($itemProperty->__toString())); break;
+                case "link" : $objItemModel->setLink(strtolower($itemProperty->__toString())); break;
+                case "description" : $objItemModel->setDescription(strtolower($itemProperty->__toString())); break;
+                case "enclosure" : $objItemModel->setImage(strtolower($itemProperty->attributes()->url->__toString())); break;
+                case "pubDate" : $objItemModel->setPubDate(strtolower($itemProperty->__toString()));
+                                 $objItemModel->setSourceId(strtolower($sourceId));
+                                 $objItemModel->setCategoryId(strtolower($categoryId));
+                                 $objItemModel->setModuleId(strtolower($moduleId));
                                  break;
                 default : echo "ERROR"; break;
             }
@@ -33,11 +33,11 @@ class ItemController {
     }
     private function checkItemModel(ItemModel $objItemModel, $check) {
 
-        if( is_array($check) && $objItemModel->getLink()        == $check["link"] &&
-                                $objItemModel->getPubDate()     == $check["pubDate"] &&
-                                $objItemModel->getSourceId()    == $check["sourceId"] &&
-                                $objItemModel->getCategoryId()  == $check["categoryId"] &&
-                                $objItemModel->getModuleId()    == $check["moduleId"]
+        if( is_array($check) && strtolower($objItemModel->getLink())       === strtolower($check["link"]) &&
+                                strtolower($objItemModel->getPubDate())    === strtolower($check["pubDate"]) &&
+                                strtolower($objItemModel->getSourceId())   === strtolower($check["sourceId"]) &&
+                                strtolower($objItemModel->getCategoryId()) === strtolower($check["categoryId"]) &&
+                                strtolower($objItemModel->getModuleId())   === strtolower($check["moduleId"])
         ) { return true; }
 
         return false;
@@ -47,6 +47,8 @@ class ItemController {
                                FROM Item ORDER BY Item.pubDate DESC LIMIT 1");
         $check->execute();
         $check = $check->fetchAll(PDO::FETCH_ASSOC);
+
+        var_dump($check);
 
         return $check;
     }
@@ -66,7 +68,7 @@ class ItemController {
 
         foreach($sxmlItem as $item) {
 
-            $objItemModel = $this->fillItemModel(new ItemModel(), null, null, null, $item);
+            $objItemModel = $this->fillItemModel(new ItemModel(), "1", "1", "1", $item);
 
             if( $this->checkItemModel($objItemModel, $check[0]) ) { break; }
 
@@ -86,15 +88,15 @@ class ItemController {
             $stmtInsertItem->bindParam(":moduleId"   , strtolower($objItemModel->getModuleId()), PDO::PARAM_STR);
             $stmtInsertItem->execute();
 
-//            $stmtInsertItem->execute(array(":id"          => $objItemModel->getId(),
-//                                           ":name"        => $objItemModel->getName(),
-//                                           ":link"        => $objItemModel->getLink(),
-//                                           ":description" => $objItemModel->getDescription(),
-//                                           ":image"       => $objItemModel->getImage(),
-//                                           ":pubDate"     => $objItemModel->getPubDate(),
-//                                           ":sourceId"    => $objItemModel->getSourceId(),
-//                                           ":categoryId"  => $objItemModel->getCategoryId(),
-//                                           ":moduleId"    => $objItemModel->getModuleId()));
+//            $stmtInsertItem->execute(array(":id"          => strtolower($objItemModel->getId()),
+//                                           ":name"        => strtolower($objItemModel->getName()),
+//                                           ":link"        => strtolower($objItemModel->getLink()),
+//                                           ":description" => strtolower($objItemModel->getDescription()),
+//                                           ":image"       => strtolower($objItemModel->getImage()),
+//                                           ":pubDate"     => strtolower($objItemModel->getPubDate()),
+//                                           ":sourceId"    => strtolower($objItemModel->getSourceId()),
+//                                           ":categoryId"  => strtolower($objItemModel->getCategoryId()),
+//                                           ":moduleId"    => strtolower($objItemModel->getModuleId())));
         }
     }
     public function selectItemModel(stdClass $objStdClass) {
