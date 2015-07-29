@@ -103,23 +103,43 @@ class ItemController {
 
         $db = DBConnection::getInstance()->_connection;
 
-        if($objStdClass->older === "true") {
-            $check = $db->prepare("SELECT * FROM Item
-                                   WHERE Item.sourceId = :sourceId
-                                   AND   Item.categoryId = :categoryId
-                                   AND   Item.moduleId = :moduleId
-                                   ORDER BY Item.pubDate DESC ");
-        } else {
-            $check = $db->prepare("SELECT * FROM Item
-                                   WHERE Item.sourceId = :sourceId,
-                                   AND   Item.categoryId = :categoryId,
-                                   AND   Item.moduleId = :moduleId
-                                   ORDER BY Item.pubDate DESC");
+        if($objStdClass->older === "true")
+        {
+            $stmtSelectItem = $db->prepare("SELECT * FROM Item
+                                            WHERE Item.id < :id
+                                            AND   Item.pubDate < :pubDate
+                                            AND   Item.sourceId = :sourceId
+                                            AND   Item.categoryId = :categoryId
+                                            AND   Item.moduleId = :moduleId
+                                            ORDER BY Item.pubDate DESC LIMIT :quantity");
+        }
+        else
+        {
+            $stmtSelectItem = $db->prepare("SELECT * FROM Item
+                                            WHERE Item.id > :id
+                                            AND   Item.pubDate > :pubDate
+                                            AND   Item.sourceId = :sourceId
+                                            AND   Item.categoryId = :categoryId
+                                            AND   Item.moduleId = :moduleId
+                                            ORDER BY Item.pubDate DESC LIMIT :quantity");
         }
 
-        $check->execute();
+        $stmtSelectItem->bindParam(":id"         , strtolower($objStdClass->id), PDO::PARAM_STR);
+        $stmtSelectItem->bindParam(":pubDate"    , strtolower($objStdClass->pubDate), PDO::PARAM_STR);
+        $stmtSelectItem->bindParam(":sourceId"   , strtolower($objStdClass->sourceId), PDO::PARAM_STR);
+        $stmtSelectItem->bindParam(":categoryId" , strtolower($objStdClass->categoryId), PDO::PARAM_STR);
+        $stmtSelectItem->bindParam(":moduleId"   , strtolower($objStdClass->moduleId), PDO::PARAM_STR);
+        $stmtSelectItem->bindParam(":quantity"   , strtolower($objStdClass->quantity), PDO::PARAM_STR);
+        $stmtSelectItem->execute();
 
-        $check = $check->fetchAll(PDO::FETCH_ASSOC);
-        return $check;
+//        $stmtSelectItem->execute(array(":id"          => strtolower($objStdClass->id),
+//                                       ":pubDate"     => strtolower($objStdClass->pubDate),
+//                                       ":sourceId"    => strtolower($objStdClass->sourceId),
+//                                       ":categoryId"  => strtolower($objStdClass->categoryId),
+//                                       ":moduleId"    => strtolower($objStdClass->moduleId),
+//                                       ":quantity"    => strtolower($objStdClass->quantity)));
+
+        $stmtSelectItem = $stmtSelectItem->fetchAll(PDO::FETCH_ASSOC);
+        return $stmtSelectItem;
     }
 }
