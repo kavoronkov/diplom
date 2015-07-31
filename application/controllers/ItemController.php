@@ -48,8 +48,6 @@ class ItemController {
         $check->execute();
         $check = $check->fetchAll(PDO::FETCH_ASSOC);
 
-        var_dump($check);
-
         return $check;
     }
     private function simplexmlSourceModel(SourceModel $objSourceModel) {
@@ -106,8 +104,7 @@ class ItemController {
         if($objStdClass->older === "true")
         {
             $stmtSelectItem = $db->prepare("SELECT * FROM Item
-                                            WHERE Item.id < :id
-                                            AND   Item.pubDate < :pubDate
+                                            WHERE Item.pubDate < :pubDate
                                             AND   Item.sourceId = :sourceId
                                             AND   Item.categoryId = :categoryId
                                             AND   Item.moduleId = :moduleId
@@ -116,28 +113,28 @@ class ItemController {
         else
         {
             $stmtSelectItem = $db->prepare("SELECT * FROM Item
-                                            WHERE Item.id > :id
-                                            AND   Item.pubDate > :pubDate
+                                            WHERE Item.pubDate > :pubDate
                                             AND   Item.sourceId = :sourceId
                                             AND   Item.categoryId = :categoryId
                                             AND   Item.moduleId = :moduleId
                                             ORDER BY Item.pubDate DESC LIMIT :quantity");
         }
 
-        $stmtSelectItem->bindParam(":id"         , strtolower($objStdClass->id), PDO::PARAM_STR);
         $stmtSelectItem->bindParam(":pubDate"    , strtolower($objStdClass->pubDate), PDO::PARAM_STR);
         $stmtSelectItem->bindParam(":sourceId"   , strtolower($objStdClass->sourceId), PDO::PARAM_STR);
         $stmtSelectItem->bindParam(":categoryId" , strtolower($objStdClass->categoryId), PDO::PARAM_STR);
         $stmtSelectItem->bindParam(":moduleId"   , strtolower($objStdClass->moduleId), PDO::PARAM_STR);
-        $stmtSelectItem->bindParam(":quantity"   , strtolower($objStdClass->quantity), PDO::PARAM_STR);
+        $quantity = (integer)$objStdClass->quantity;
+        $stmtSelectItem->bindParam(":quantity"   , $quantity, PDO::PARAM_INT);
+
         $stmtSelectItem->execute();
 
-//        $stmtSelectItem->execute(array(":id"          => strtolower($objStdClass->id),
-//                                       ":pubDate"     => strtolower($objStdClass->pubDate),
+
+//        $stmtSelectItem->execute(array(":pubDate"     => strtolower($objStdClass->pubDate),
 //                                       ":sourceId"    => strtolower($objStdClass->sourceId),
 //                                       ":categoryId"  => strtolower($objStdClass->categoryId),
 //                                       ":moduleId"    => strtolower($objStdClass->moduleId),
-//                                       ":quantity"    => strtolower($objStdClass->quantity)));
+//                                       ":quantity"    => $objStdClass->quantity));
 
         $stmtSelectItem = $stmtSelectItem->fetchAll(PDO::FETCH_ASSOC);
         return $stmtSelectItem;
