@@ -10,27 +10,38 @@ class FrontController {
         // Проверить на наличие знака ?
         $request = explode("?", $request);
 
-        $request = trim($request[0],"/");
-
-        $request = explode("/", $request);
-
-        $ctrlName = (!empty($request[0])) ? ucfirst($request[0]) . "Controller" : "IndexController";
-        $actionName = (!empty($request[1])) ? $request[1] . "Action" : "indexAction";
+        $params = $this->getUrlParams($request[0]);
 
         //echo "ctrl = ".$ctrlName;
        // echo "<br>method = ".$actionName;
 
-        if (class_exists($ctrlName)) {
-            //echo "yes class";
-            $ctrl = new $ctrlName();
-            if($ctrl instanceof IController) {
-                if (method_exists($ctrl, $actionName)) {
-                    $this->body = $ctrl->$actionName();
+        if($params["module"]){
+            $ctrl = $params["module"]."\\Controller\\".$params["controller"];
+            var_dump($params);
+            if (class_exists($ctrl)) {
+                $ctrl = new $ctrl();
+                if($ctrl instanceof IController) {
+                    if (method_exists($ctrl, $params["action"])) {
+                        $this->body = $ctrl->$params["action"]();
+                    }
                 }
+            }else {
+                echo "no mod class";
+                // action BAD
             }
-        }else {
-            echo "no class";
-            // action BAD
+        }else{
+            if (class_exists($params["controller"])) {
+                echo "yes class";
+                $ctrl = new $params["controller"]();
+                if($ctrl instanceof IController) {
+                    if (method_exists($ctrl, $params["action"])) {
+                        $this->body = $ctrl->$params["action"]();
+                    }
+                }
+            }else {
+                echo "no class";
+                // action BAD
+            }
         }
 
     }
@@ -43,5 +54,23 @@ class FrontController {
     public function setBody($body)
     {
         $this->body = $body;
+    }
+
+    private function getUrlParams($route) {
+        $route_mask = Application::$mainCfg["route_mask"];
+        $f = explode("/",trim($route,"/"));
+        foreach($route_mask as $module => $mask) {
+            if(preg_match($mask,$route)) {
+                return array(
+                    "module" => $module,
+                    "controller" => (!empty($f[1])) ? ucfirst($f[1]) . "Controller" : "IndexController",
+                    "action" => (!empty($f[2])) ? $f[2] . "Action" : "indexAction"
+                );
+            }
+        }
+        return array(
+            "controller" => (!empty($f[0])) ? ucfirst($f[0]) . "Controller" : "IndexController",
+            "action" => (!empty($f[1])) ? $f[1] . "Action" : "indexAction"
+        );
     }
 }

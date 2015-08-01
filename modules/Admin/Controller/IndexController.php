@@ -1,5 +1,11 @@
 <?php
 
+namespace Admin\Controller;
+use \IController;
+use \RenderView;
+use \ItemController;
+use \SourceModel;
+
 class IndexController implements IController {
 
     public function indexAction() {

@@ -21,5 +21,15 @@ return array(
     "autoload" => array(
         "class" => "AutoLoader",
         "method"=> "classLoader"
+    ),
+
+    "modules" => array(
+        "Admin" => array(
+            "dirrectory" => "modules/Admin"
+        )
+    ),
+
+    "route_mask" => array(
+        "Admin" => "/^(\\/admin(\\/[a-z_]{0,})){0,2}$/"
     )
 );
