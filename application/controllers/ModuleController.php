@@ -27,6 +27,14 @@ class ModuleController
         $stmtSelectModule = $stmtSelectModule->fetchAll(PDO::FETCH_ASSOC);
         return $stmtSelectModule;
     }
+    public function selectAllModuleModel()
+    {
+        $db = DBConnection::getInstance()->_connection;
+        $stmtSelectAllModule = $db->prepare("SELECT * FROM Module");
+        $stmtSelectAllModule->execute();
+        $stmtSelectAllModule = $stmtSelectAllModule->fetchAll(PDO::FETCH_ASSOC);
+        return $stmtSelectAllModule;
+    }
     public function updateModuleModel($moduleId, $moduleName)
     {
         $db = DBConnection::getInstance()->_connection;
