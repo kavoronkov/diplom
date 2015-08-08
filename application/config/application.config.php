@@ -25,11 +25,12 @@ return array(
 
     "modules" => array(
         "Admin" => array(
-            "dirrectory" => "modules/Admin"
+            "dirrectory" => "modules/Admin",
+            "views" => "modules/Admin/View"
         )
     ),
 
     "route_mask" => array(
-        "Admin" => "/^(\\/admin(\\/[a-z_]{0,})){0,2}$/"
+        "Admin" => "/^(\\/admin(\\/[a-z_]{0,}){0,2})$/"
     )
 );

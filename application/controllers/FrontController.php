@@ -14,10 +14,9 @@ class FrontController {
 
         //echo "ctrl = ".$ctrlName;
        // echo "<br>method = ".$actionName;
-
+//    var_dump($params);
         if($params["module"]){
             $ctrl = $params["module"]."\\Controller\\".$params["controller"];
-            var_dump($params);
             if (class_exists($ctrl)) {
                 $ctrl = new $ctrl();
                 if($ctrl instanceof IController) {
@@ -31,7 +30,7 @@ class FrontController {
             }
         }else{
             if (class_exists($params["controller"])) {
-                echo "yes class";
+//                echo "yes class";
                 $ctrl = new $params["controller"]();
                 if($ctrl instanceof IController) {
                     if (method_exists($ctrl, $params["action"])) {

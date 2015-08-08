@@ -5,12 +5,12 @@ use \IController;
 use \RenderView;
 use \ItemController;
 use \SourceModel;
+use \ModuleController;
 
-class IndexController implements IController {
+class IndexController extends  IController {
 
     public function indexAction() {
-        $r = new RenderView();
-        return $r->render("index");
+        $this->render("index",array());
 
 //        echo "<h1> HHH HHH</h1>";
 
@@ -26,6 +26,13 @@ class IndexController implements IController {
 //        $objItemController->parseInsertLiga(new SourceModel());
     }
 
+    public function moduleAction() {
+        $objModuleController = new ModuleController();
+        $modules = $objModuleController->selectAllModuleModel();
+        $r = new RenderView(__CLASS__,array("modules"=>$modules));
+        return $r->render("model");
+    }
+
     public function testAction() {
 //        if($_SERVER["REQUEST_METHOD"])
 
@@ -35,7 +42,7 @@ class IndexController implements IController {
         $objItemController = new ItemController();
         $objItemController->parseInsertLiga(new SourceModel());
         $resp = $objItemController->selectItemModel($o);
- var_dump($resp);
+        var_dump($resp);
         echo json_encode($resp);
     }
 

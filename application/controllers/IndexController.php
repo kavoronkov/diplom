@@ -1,10 +1,10 @@
 <?php
 
-class IndexController implements IController {
+class IndexController extends  IController {
 
     public function indexAction() {
-        $r = new RenderView();
-        return $r->render("index");
+
+       return $this->render("index",array());
 
 //        echo "<h1> HHH HHH</h1>";
 
