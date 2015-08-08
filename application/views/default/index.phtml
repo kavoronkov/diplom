@@ -117,41 +117,42 @@
                           <button type='button' class='btn btn-primary btn-xs btn-block' id='" . $value['id'] . "'
                                   data-toggle='modal' data-target='#EditModuleModal'>MODIFY</button>
                       </div>
-                 </div>";
-        }
+                 </div>
+        ";}
     ?>
-
-    <form action="ModuleController.php" method="post" class="form-horizontal" role="form">
-        <div class="modal fade" id="EditModuleModal" tabindex="-1"
-             role="dialog" aria-labelledby="EditModuleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="EditModuleModalLabel">MODULE</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="inputName" class="col-lg-2 col-md-2 col-sm-2 col-xs-2 control-label">Old Name</label>
-                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                <input type="text" class="form-control" id="inputName" name="oldName" placeholder="Name" disabled>
+                <form action='ModuleController.php' method='post' class='form-horizontal' role='form'>
+                    <div class='modal fade' id='EditModuleModal' tabindex='-1'
+                         role='dialog' aria-labelledby='EditModuleModalLabel' aria-hidden='true'>
+                        <div class='modal-dialog modal-lg'>
+                            <div class='modal-content'>
+                                <div class='modal-header'>
+                                    <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+                                    <h4 class='modal-title' id='EditModuleModalLabel'>MODULE</h4>
+                                </div>
+                                <div class='modal-body'>
+                                    <div class='form-group'>
+                                        <label for='inputName' class='col-lg-2 col-md-2 col-sm-2 col-xs-2 control-label'>Old Name</label>
+                                        <div class='col-lg-10 col-md-10 col-sm-10 col-xs-10'>
+                                            <input type='text' class='form-control' id='inputName' name='oldName' placeholder='Name' disabled>
+                                        </div>
+                                    </div>
+                                    <div class='form-group'>
+                                        <label for='inputName' class='col-lg-2 col-md-2 col-sm-2 col-xs-2 control-label'>New Name</label>
+                                        <div class='col-lg-10 col-md-10 col-sm-10 col-xs-10'>
+                                            <input type='text' class='form-control' id='inputName' name='newName' placeholder='Name'>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class='modal-footer'>
+                                    <button type='button' class='btn btn-default' data-dismiss='modal'>CANCEL</button>
+                                    <button type='submit' class='btn btn-primary'>SAVE</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label for="inputName" class="col-lg-2 col-md-2 col-sm-2 col-xs-2 control-label">New Name</label>
-                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-                                <input type="text" class="form-control" id="inputName" name="newName" placeholder="Name">
-                            </div>
-                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
-                        <button type="submit" class="btn btn-primary">SAVE</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </form>
+                </form>
+<!--        ";}-->
+<!--    ?>-->
 
 </div>
 
