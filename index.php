@@ -2,8 +2,8 @@
 
 require_once "application/Application.php";
 
-$fc = Application::getInstance() -> init();
+$objFrontController = Application::getInstance() -> init();
 
-$fc -> route();
+$objFrontController -> route();
 
-$fc->getBody();
+$objFrontController -> getBody();
