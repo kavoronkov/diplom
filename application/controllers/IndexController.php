@@ -1,36 +1,22 @@
 <?php
 
-class IndexController extends  IController {
+class IndexController extends IController {
 
     public function indexAction() {
-
-       return $this->render("index",array());
-
-//        echo "<h1> HHH HHH</h1>";
-
-//        $objModuleController = new ModuleController();
-//        //$obj = $objModuleController->createModuleModel("news");
-//        $objModuleController->insertModuleModel($objModuleController->createModuleModel("news"));
-//
-//        $objCategoryController = new CategoryController();
-//        //$obj = $objCategoryController->createCategoryModel($objModuleController, "politics");
-//        $objCategoryController->insertCategoryModel($objCategoryController->createCategoryModel($objModuleController, "politics"));
-//
-//        $objItemController = new ItemController();
-//        $objItemController->parseInsertLiga(new SourceModel());
+       return $this->render("index", array());
     }
 
     public function testAction() {
-//        if($_SERVER["REQUEST_METHOD"])
-
         $json = file_get_contents("php://input");
-        $o = json_decode($json);
+        $json_request = json_decode($json);
 
+        $objSourceController = new SourceController();
+        $objSourceController->selectSourceModel($json_request);
         $objItemController = new ItemController();
-        $objItemController->parseInsertLiga(new SourceModel());
-        $resp = $objItemController->selectItemModel($o);
- var_dump($resp);
-        echo json_encode($resp);
+        $objItemController->parseInsertLiga($objSourceController);
+        $selection = $objItemController->selectItemModel($json_request);
+
+        echo json_encode($selection);
     }
 
 }

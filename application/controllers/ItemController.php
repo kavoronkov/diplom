@@ -51,8 +51,8 @@ class ItemController {
         return $check;
     }
     private function simplexmlSourceModel(SourceModel $objSourceModel) {
-//        $sxml = simplexml_load_file($objSourceModel->getXml());
-        $sxml = simplexml_load_file("http://news.liga.net/politics/rss.xml");
+        $sxml = simplexml_load_file($objSourceModel->getXml());
+//        $sxml = simplexml_load_file("http://news.liga.net/politics/rss.xml");
         $sxmlItem = $sxml->xpath("/rss/channel/item");
         return $sxmlItem;
     }
@@ -66,7 +66,11 @@ class ItemController {
 
         foreach($sxmlItem as $item) {
 
-            $objItemModel = $this->fillItemModel(new ItemModel(), "1", "1", "1", $item);
+            $objItemModel = $this->fillItemModel(new ItemModel(),
+                                                 $objSourceModel->getId(),
+                                                 $objSourceModel->getCategoryId(),
+                                                 $objSourceModel->getModuleId(),
+                                                 $item);
 
             if( $this->checkItemModel($objItemModel, $check[0]) ) { break; }
 

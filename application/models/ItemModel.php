@@ -7,18 +7,16 @@ class ItemModel {
     protected $id;          // primary key / первичный ключ
     protected $name;        // item name / название ресурса
     protected $link;        // item url / url ресурса
-    protected $description; // item description // краткое описание ресурса
+    protected $description; // item description // краткое описание
     protected $image;       // image url / url изображения
     protected $pubDate;     // item pubDate // дата публикации
-    protected $text;        // item content / подробное описание ресурса
+    protected $text;        // item content / подробное описание
     protected $moduleId;    // foreign key / внешний ключ
     protected $categoryId;  // foreign key / внешний ключ
     protected $sourceId;    // foreign key / внешний ключ
 
 
-    function __construct() {
-
-    }
+    function __construct() {  }
 
 //    function __construct($id, $item, $link, $description, $image, $pubDate, $text, $moduleId, $categoryId, $sourceId)
 //    {

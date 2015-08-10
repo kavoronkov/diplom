@@ -26,8 +26,8 @@ class Application {
         self::getApplicationConfig();
         self::setIncludePath();
         self::setAutoload();
-        $fc = FrontController::getInstance();
-        return $fc;
+        $objFrontController = FrontController::getInstance();
+        return $objFrontController;
     }
 
     private function getApplicationConfig() {
@@ -46,9 +46,9 @@ class Application {
     }
 
     private function setAutoload() {
-        $al = self::$mainCfg["autoload"];
-        require_once ($al["class"].".php");
-        spl_autoload_register(array( $al["class"], $al["method"]));
+        $autoLoad = self::$mainCfg["autoload"];
+        require_once ($autoLoad["class"].".php");
+        spl_autoload_register(array( $autoLoad["class"], $autoLoad["method"]));
     }
 
 }

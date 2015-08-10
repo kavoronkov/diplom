@@ -6,9 +6,7 @@ class CategoryModel {
     protected $name;      // category name / название категории
     protected $moduleId;  // foreign key / внешний ключ
 
-//    function __construct() {
-//
-//    }
+//    function __construct() {  }
 
     function __construct($id, $name, $moduleId)
     {

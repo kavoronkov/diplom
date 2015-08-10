@@ -35,21 +35,38 @@ class SourceController {
 //                                         ":categoryId" => strtolower($objSourceModel->getCategoryId())));
 
     }
-    public function selectSourceModel($sourceId, $categoryId, $moduleId)
+//    public function selectSourceModel($sourceId, $categoryId, $moduleId)
+//    {
+//        $db = DBConnection::getInstance()->_connection;
+//        $stmtSelectSource = $db->prepare("SELECT * FROM Source
+//                                          WHERE Source.id = . :sourceId
+//                                          AND Source.categoryId = :categoryId
+//                                          AND Source.moduleId = :moduleId ");
+//        $stmtSelectSource->bindParam(':sourceId', strtolower($sourceId), PDO::PARAM_STR);
+//        $stmtSelectSource->bindParam(':categoryId', strtolower($categoryId), PDO::PARAM_STR);
+//        $stmtSelectSource->bindParam(':moduleId', strtolower($moduleId), PDO::PARAM_STR);
+//        $stmtSelectSource->execute();
+////        $stmtSelectSource->execute(array(':sourceId', strtolower($sourceId),
+////                                         ':categoryId', strtolower($categoryId),
+////                                         ':moduleId', strtolower($moduleId)));
+//        $stmtSelectSource = $stmtSelectSource->fetchAll(PDO::FETCH_ASSOC);
+//        return $stmtSelectSource;
+//    }
+    public function selectSourceModel(stdClass $objStdClass)
     {
         $db = DBConnection::getInstance()->_connection;
         $stmtSelectSource = $db->prepare("SELECT * FROM Source
                                           WHERE Source.id = . :sourceId
                                           AND Source.categoryId = :categoryId
                                           AND Source.moduleId = :moduleId ");
-        $stmtSelectSource->bindParam(':sourceId', strtolower($sourceId), PDO::PARAM_STR);
-        $stmtSelectSource->bindParam(':categoryId', strtolower($categoryId), PDO::PARAM_STR);
-        $stmtSelectSource->bindParam(':moduleId', strtolower($moduleId), PDO::PARAM_STR);
+        $stmtSelectSource->bindParam(':sourceId', strtolower($objStdClass->sourceId), PDO::PARAM_STR);
+        $stmtSelectSource->bindParam(':categoryId', strtolower($objStdClass->categoryId), PDO::PARAM_STR);
+        $stmtSelectSource->bindParam(':moduleId', strtolower($objStdClass->moduleId), PDO::PARAM_STR);
         $stmtSelectSource->execute();
 //        $stmtSelectSource->execute(array(':sourceId', strtolower($sourceId),
 //                                         ':categoryId', strtolower($categoryId),
 //                                         ':moduleId', strtolower($moduleId)));
-        $stmtSelectSource = $stmtSelectSource->fetchAll(PDO::FETCH_ASSOC);
+        $stmtSelectSource = $stmtSelectSource->fetchAll(PDO::FETCH_CLASS, "SourceModel");
         return $stmtSelectSource;
     }
     public function updateSourceModel($sourceId, $sourceName, $sourceUrl, $sourceXml, $sourceTitle, $sourceDescription,

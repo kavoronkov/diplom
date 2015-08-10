@@ -2,11 +2,9 @@
 class RenderView
 {
     private $_dir;
-    private $_params;
 
-    public function __construct($className,array $params) {
-        $namespaces = explode("\\",$className);
-//        $this->_params = $params;
+    public function __construct($className, array $params) {
+        $namespaces = explode("\\", $className);
         foreach($params as $key => $val) {
             $this->$key = $val;
         }

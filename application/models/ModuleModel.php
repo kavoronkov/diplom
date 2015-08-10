@@ -5,9 +5,7 @@ class ModuleModel {
     protected $id;   // primary key / первичный ключ
     protected $name; // module name / название модуля
 
-//    function __construct() {
-//
-//    }
+//    function __construct() {  }
 
     function __construct($id, $name)
     {
