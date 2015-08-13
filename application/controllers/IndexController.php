@@ -6,17 +6,60 @@ class IndexController extends IController {
        return $this->render("index", array());
     }
 
-    public function testAction() {
+    public function requestAction() {
         $json = file_get_contents("php://input");
         $json_request = json_decode($json);
 
         $objSourceController = new SourceController();
-        $objSourceController->selectSourceModel($json_request);
+        $objSourceModel = $objSourceController->selectSourceModel($json_request);
         $objItemController = new ItemController();
-        $objItemController->parseInsertLiga($objSourceController);
-        $selection = $objItemController->selectItemModel($json_request);
-
-        echo json_encode($selection);
+        if($json_request->pubDate === "") {
+            $objItemController->fullInsertItemModel($objSourceModel[0]);
+        } else {
+            $objItemController->insertItemModel($objSourceModel[0]);
+            $selection = $objItemController->selectItemModel($json_request);
+            echo json_encode($selection);
+        }
     }
 
+    public function exchangeAllAction() {
+//        $json = file_get_contents("php://input");
+//        $json_request = json_decode($json);
+
+        $objModuleController = new ModuleController();
+        $objModuleModel = $objModuleController->selectAllModuleModel();
+        echo json_encode($objModuleModel);
+
+        $objCategoryController = new CategoryController();
+        $objCategoryModel = $objCategoryController->selectAllCategoryModel();
+        echo json_encode($objCategoryModel);
+
+        $objSourceController = new SourceController();
+        $objSourceModel = $objSourceController->selectAllSourceModel();
+        echo json_encode($objSourceModel);
+    }
+    public function exchangeModuleAction() {
+//        $json = file_get_contents("php://input");
+//        $json_request = json_decode($json);
+
+        $objModuleController = new ModuleController();
+        $objModuleModel = $objModuleController->selectAllModuleModel();
+        echo json_encode($objModuleModel);
+    }
+    public function exchangeCategoryAction() {
+//        $json = file_get_contents("php://input");
+//        $json_request = json_decode($json);
+
+        $objCategoryController = new CategoryController();
+        $objCategoryModel = $objCategoryController->selectAllCategoryModel();
+        echo json_encode($objCategoryModel);
+    }
+    public function exchangeSourceAction() {
+//        $json = file_get_contents("php://input");
+//        $json_request = json_decode($json);
+
+        $objSourceController = new SourceController();
+        $objSourceModel = $objSourceController->selectAllSourceModel();
+        echo json_encode($objSourceModel);
+    }
 }

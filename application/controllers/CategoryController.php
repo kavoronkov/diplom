@@ -2,10 +2,12 @@
 
 class CategoryController
 {
-    public function createCategoryModel($categoryName, $moduleId)
+    public function createCategoryModel($categoryName, ModuleModel $objModuleModel)
     {
-        $objCategoryModel = new CategoryModel(strtolower($categoryName), strtolower($categoryName),
-                                              strtolower($moduleId));
+        $objCategoryModel = new CategoryModel();
+        $objCategoryModel->setId(strtolower($objModuleModel->getId()) . "_" . strtolower($categoryName));
+        $objCategoryModel->setName(strtolower($categoryName));
+        $objCategoryModel->setModuleId(strtolower($objModuleModel->getId()));
         return $objCategoryModel;
     }
     public function insertCategoryModel(CategoryModel $objCategoryModel)
@@ -30,6 +32,13 @@ class CategoryController
         $stmtSelectCategory->execute();
 //        $stmtSelectCategory->execute(array(':categoryId', strtolower($categoryId),'
 //                                            ':moduleId', strtolower($moduleId)));
+        $stmtSelectCategory = $stmtSelectCategory->fetchAll(PDO::FETCH_ASSOC);
+        return $stmtSelectCategory;
+    }public function selectAllCategoryModel()
+    {
+        $db = DBConnection::getInstance()->_connection;
+        $stmtSelectCategory = $db->prepare("SELECT * FROM Category");
+        $stmtSelectCategory->execute();
         $stmtSelectCategory = $stmtSelectCategory->fetchAll(PDO::FETCH_ASSOC);
         return $stmtSelectCategory;
     }

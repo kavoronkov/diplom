@@ -23,7 +23,7 @@ class IndexController extends  IController {
 //        $objCategoryController->insertCategoryModel($objCategoryController->createCategoryModel($objModuleController, "politics"));
 //
 //        $objItemController = new ItemController();
-//        $objItemController->parseInsertLiga(new SourceModel());
+//        $objItemController->insertItemModel(new SourceModel());
     }
 
     public function moduleAction() {
@@ -40,7 +40,7 @@ class IndexController extends  IController {
         $o = json_decode($json);
 
         $objItemController = new ItemController();
-        $objItemController->parseInsertLiga(new SourceModel());
+        $objItemController->insertItemModel(new SourceModel());
         $resp = $objItemController->selectItemModel($o);
         var_dump($resp);
         echo json_encode($resp);

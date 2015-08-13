@@ -7,7 +7,7 @@ class ItemController {
         $id = date("YmdHis") . (1000 + ItemModel::$counter);
         $objItemModel->setId($id);
     }
-    private function fillItemModel(ItemModel $objItemModel, $sourceId, $categoryId, $moduleId, $item) {
+    private function fillItemModel(ItemModel $objItemModel, SourceModel $objSourceModel, $item) {
 
         $this->createIdItemModel($objItemModel);
 
@@ -20,9 +20,9 @@ class ItemController {
                 case "description" : $objItemModel->setDescription(strtolower($itemProperty->__toString())); break;
                 case "enclosure" : $objItemModel->setImage(strtolower($itemProperty->attributes()->url->__toString())); break;
                 case "pubDate" : $objItemModel->setPubDate(strtolower($itemProperty->__toString()));
-                                 $objItemModel->setSourceId(strtolower($sourceId));
-                                 $objItemModel->setCategoryId(strtolower($categoryId));
-                                 $objItemModel->setModuleId(strtolower($moduleId));
+                                 $objItemModel->setSourceId(strtolower($objSourceModel->getId()));
+                                 $objItemModel->setCategoryId(strtolower($objSourceModel->getCategoryId()));
+                                 $objItemModel->setModuleId(strtolower($objSourceModel->getModuleId()));
                                  break;
                 default : echo "ERROR"; break;
             }
@@ -44,7 +44,7 @@ class ItemController {
     }
     private function checkItemModelDB($db) {
         $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.sourceId, Item.categoryId, Item.moduleId
-                               FROM Item ORDER BY Item.pubDate DESC LIMIT 1");
+                               FROM Item ORDER BY Item.id, Item.pubDate ASC LIMIT 1");
         $check->execute();
         $check = $check->fetchAll(PDO::FETCH_ASSOC);
 
@@ -52,11 +52,10 @@ class ItemController {
     }
     private function simplexmlSourceModel(SourceModel $objSourceModel) {
         $sxml = simplexml_load_file($objSourceModel->getXml());
-//        $sxml = simplexml_load_file("http://news.liga.net/politics/rss.xml");
         $sxmlItem = $sxml->xpath("/rss/channel/item");
         return $sxmlItem;
     }
-    public function parseInsertLiga(SourceModel $objSourceModel) {
+    public function insertItemModel(SourceModel $objSourceModel) {
 
         $db = DBConnection::getInstance()->_connection;
 
@@ -66,13 +65,45 @@ class ItemController {
 
         foreach($sxmlItem as $item) {
 
-            $objItemModel = $this->fillItemModel(new ItemModel(),
-                                                 $objSourceModel->getId(),
-                                                 $objSourceModel->getCategoryId(),
-                                                 $objSourceModel->getModuleId(),
-                                                 $item);
+            $objItemModel = $this->fillItemModel(new ItemModel(), $objSourceModel, $item);
 
             if( $this->checkItemModel($objItemModel, $check[0]) ) { break; }
+
+            $stmtInsertItem = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate,
+                                                                          sourceId, categoryId, moduleId)
+                                            VALUES (:id, :name, :link, :description, :image, :pubDate,
+                                                                    :sourceId, :categoryId, :moduleId)");
+
+            $stmtInsertItem->bindParam(":id"         , strtolower($objItemModel->getId()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":name"       , strtolower($objItemModel->getName()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":link"       , strtolower($objItemModel->getLink()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":description", strtolower($objItemModel->getDescription()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":image"      , strtolower($objItemModel->getImage()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":pubDate"    , strtolower($objItemModel->getPubDate()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":sourceId"   , strtolower($objItemModel->getSourceId()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":categoryId" , strtolower($objItemModel->getCategoryId()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":moduleId"   , strtolower($objItemModel->getModuleId()), PDO::PARAM_STR);
+            $stmtInsertItem->execute();
+
+//            $stmtInsertItem->execute(array(":id"          => strtolower($objItemModel->getId()),
+//                                           ":name"        => strtolower($objItemModel->getName()),
+//                                           ":link"        => strtolower($objItemModel->getLink()),
+//                                           ":description" => strtolower($objItemModel->getDescription()),
+//                                           ":image"       => strtolower($objItemModel->getImage()),
+//                                           ":pubDate"     => strtolower($objItemModel->getPubDate()),
+//                                           ":sourceId"    => strtolower($objItemModel->getSourceId()),
+//                                           ":categoryId"  => strtolower($objItemModel->getCategoryId()),
+//                                           ":moduleId"    => strtolower($objItemModel->getModuleId())));
+        }
+    }public function fullInsertItemModel(SourceModel $objSourceModel) {
+
+        $db = DBConnection::getInstance()->_connection;
+
+        $sxmlItem = $this->simplexmlSourceModel($objSourceModel);
+
+        foreach($sxmlItem as $item) {
+
+            $objItemModel = $this->fillItemModel(new ItemModel(), $objSourceModel, $item);
 
             $stmtInsertItem = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate,
                                                                           sourceId, categoryId, moduleId)

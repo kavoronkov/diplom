@@ -5,13 +5,13 @@ class ModuleModel {
     protected $id;   // primary key / первичный ключ
     protected $name; // module name / название модуля
 
-//    function __construct() {  }
+    function __construct() {  }
 
-    function __construct($id, $name)
-    {
-        $this->id = $id;
-        $this->name = $name;
-    }
+//    function __construct($id, $name)
+//    {
+//        $this->id = $id;
+//        $this->name = $name;
+//    }
 
     public function getId()
     {

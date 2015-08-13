@@ -6,14 +6,14 @@ class CategoryModel {
     protected $name;      // category name / название категории
     protected $moduleId;  // foreign key / внешний ключ
 
-//    function __construct() {  }
+    function __construct() {  }
 
-    function __construct($id, $name, $moduleId)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->moduleId = $moduleId;
-    }
+//    function __construct($id, $name, $moduleId)
+//    {
+//        $this->id = $id;
+//        $this->name = $name;
+//        $this->moduleId = $moduleId;
+//    }
 
     public function getId()
     {

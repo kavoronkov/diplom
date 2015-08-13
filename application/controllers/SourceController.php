@@ -2,11 +2,19 @@
 
 class SourceController {
 
-    public function createSourceModel($name, $url, $xml, $title, $description, $moduleId, $categoryId)
+    public function createSourceModel($sourceName, $sourceUrl, $sourceXml, $sourceTitle, $sourceDescription,
+                                      CategoryModel $objCategoryModel)
     {
-        $objSourceModel = new SourceModel(strtolower($name), strtolower($name), strtolower($url), strtolower($xml),
-                                          strtolower($title), strtolower($description),
-                                          strtolower($moduleId), strtolower($categoryId));
+        $objSourceModel = new SourceModel();
+        $objSourceModel->setId(strtolower($objCategoryModel->getId()) . "_" . strtolower($sourceName));
+        $objSourceModel->setName(strtolower($sourceName));
+        $objSourceModel->setUrl(strtolower($sourceUrl));
+        $objSourceModel->setXml(strtolower($sourceXml));
+        $objSourceModel->setTitle(strtolower($sourceTitle));
+        $objSourceModel->setDescription(strtolower($sourceDescription));
+        $objSourceModel->setModuleId(strtolower($objCategoryModel->getModuleId()));
+        $objSourceModel->setCategoryId(strtolower($objCategoryModel->getId()));
+
         return $objSourceModel;
     }
     public function insertSourceModel(SourceModel $objSourceModel) {
@@ -56,7 +64,7 @@ class SourceController {
     {
         $db = DBConnection::getInstance()->_connection;
         $stmtSelectSource = $db->prepare("SELECT * FROM Source
-                                          WHERE Source.id = . :sourceId
+                                          WHERE Source.id = :sourceId
                                           AND Source.categoryId = :categoryId
                                           AND Source.moduleId = :moduleId ");
         $stmtSelectSource->bindParam(':sourceId', strtolower($objStdClass->sourceId), PDO::PARAM_STR);
@@ -67,6 +75,13 @@ class SourceController {
 //                                         ':categoryId', strtolower($categoryId),
 //                                         ':moduleId', strtolower($moduleId)));
         $stmtSelectSource = $stmtSelectSource->fetchAll(PDO::FETCH_CLASS, "SourceModel");
+        return $stmtSelectSource;
+    }public function selectAllSourceModel()
+    {
+        $db = DBConnection::getInstance()->_connection;
+        $stmtSelectSource = $db->prepare("SELECT * FROM Source");
+        $stmtSelectSource->execute();
+        $stmtSelectSource = $stmtSelectSource->fetchAll(PDO::FETCH_ASSOC);
         return $stmtSelectSource;
     }
     public function updateSourceModel($sourceId, $sourceName, $sourceUrl, $sourceXml, $sourceTitle, $sourceDescription,
