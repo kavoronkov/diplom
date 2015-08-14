@@ -95,7 +95,8 @@ class ItemController {
 //                                           ":categoryId"  => strtolower($objItemModel->getCategoryId()),
 //                                           ":moduleId"    => strtolower($objItemModel->getModuleId())));
         }
-    }public function fullInsertItemModel(SourceModel $objSourceModel) {
+    }
+    public function fullInsertItemModel(SourceModel $objSourceModel) {
 
         $db = DBConnection::getInstance()->_connection;
 
@@ -143,7 +144,7 @@ class ItemController {
                                             AND   Item.sourceId = :sourceId
                                             AND   Item.categoryId = :categoryId
                                             AND   Item.moduleId = :moduleId
-                                            ORDER BY Item.pubDate DESC LIMIT :quantity");
+                                            ORDER BY Item.id ASC LIMIT :quantity");
         }
         else
         {
@@ -152,7 +153,7 @@ class ItemController {
                                             AND   Item.sourceId = :sourceId
                                             AND   Item.categoryId = :categoryId
                                             AND   Item.moduleId = :moduleId
-                                            ORDER BY Item.pubDate DESC LIMIT :quantity");
+                                            ORDER BY Item.id ASC LIMIT :quantity");
         }
 
         $stmtSelectItem->bindParam(":pubDate"    , strtolower($objStdClass->pubDate), PDO::PARAM_STR);
