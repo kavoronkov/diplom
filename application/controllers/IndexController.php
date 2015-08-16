@@ -5,6 +5,15 @@ class IndexController extends IController {
     public function indexAction() {
        return $this->render("index", array());
     }
+    public function moduleAction() {
+        return $this->render("module", array());
+    }
+    public function categoryAction() {
+        return $this->render("category", array());
+    }
+    public function sourceAction() {
+        return $this->render("source", array());
+    }
 
     public function requestAction() {
         $json = file_get_contents("php://input");
