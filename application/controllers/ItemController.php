@@ -96,43 +96,6 @@ class ItemController {
 //                                           ":moduleId"    => strtolower($objItemModel->getModuleId())));
         }
     }
-    public function fullInsertItemModel(SourceModel $objSourceModel) {
-
-        $db = DBConnection::getInstance()->_connection;
-
-        $sxmlItem = $this->simplexmlSourceModel($objSourceModel);
-
-        foreach($sxmlItem as $item) {
-
-            $objItemModel = $this->fillItemModel(new ItemModel(), $objSourceModel, $item);
-
-            $stmtInsertItem = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate,
-                                                                          sourceId, categoryId, moduleId)
-                                            VALUES (:id, :name, :link, :description, :image, :pubDate,
-                                                                    :sourceId, :categoryId, :moduleId)");
-
-            $stmtInsertItem->bindParam(":id"         , strtolower($objItemModel->getId()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":name"       , strtolower($objItemModel->getName()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":link"       , strtolower($objItemModel->getLink()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":description", strtolower($objItemModel->getDescription()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":image"      , strtolower($objItemModel->getImage()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":pubDate"    , strtolower($objItemModel->getPubDate()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":sourceId"   , strtolower($objItemModel->getSourceId()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":categoryId" , strtolower($objItemModel->getCategoryId()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":moduleId"   , strtolower($objItemModel->getModuleId()), PDO::PARAM_STR);
-            $stmtInsertItem->execute();
-
-//            $stmtInsertItem->execute(array(":id"          => strtolower($objItemModel->getId()),
-//                                           ":name"        => strtolower($objItemModel->getName()),
-//                                           ":link"        => strtolower($objItemModel->getLink()),
-//                                           ":description" => strtolower($objItemModel->getDescription()),
-//                                           ":image"       => strtolower($objItemModel->getImage()),
-//                                           ":pubDate"     => strtolower($objItemModel->getPubDate()),
-//                                           ":sourceId"    => strtolower($objItemModel->getSourceId()),
-//                                           ":categoryId"  => strtolower($objItemModel->getCategoryId()),
-//                                           ":moduleId"    => strtolower($objItemModel->getModuleId())));
-        }
-    }
     public function selectItemModel(stdClass $objStdClass) {
 
         $db = DBConnection::getInstance()->_connection;

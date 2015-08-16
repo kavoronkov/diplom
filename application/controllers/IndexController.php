@@ -14,7 +14,7 @@ class IndexController extends IController {
         $objSourceModel = $objSourceController->selectSourceModel($json_request);
         $objItemController = new ItemController();
         if($json_request->pubDate === "") {
-            $objItemController->fullInsertItemModel($objSourceModel[0]);
+            $objItemController->insertItemModel($objSourceModel[0]);
         } else {
             $objItemController->insertItemModel($objSourceModel[0]);
             $selection = $objItemController->selectItemModel($json_request);

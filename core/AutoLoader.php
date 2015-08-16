@@ -4,7 +4,7 @@ class AutoLoader {
     static public function classLoader($className) {
         $classFile = str_replace("\\",DIRECTORY_SEPARATOR, $className);
         if(self::fileExists($classFile,"php")) {
-            require_once $className.".php";
+            require_once $className . ".php";
         }else {
             echo "ERROR NO FILE EXISTS!!!";
         }

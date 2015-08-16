@@ -7,7 +7,7 @@ use \ItemController;
 use \SourceModel;
 use \ModuleController;
 
-class IndexController extends  IController {
+class IndexController extends IController {
 
     public function indexAction() {
         $this->render("index",array());
