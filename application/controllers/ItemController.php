@@ -4,7 +4,7 @@ class ItemController {
 
     private function createIdItemModel(ItemModel $objItemModel) {
         ItemModel::$counter++;
-        $id = date("YmdHis") . (1000 + ItemModel::$counter);
+        $id = date("YmdHis") . (1000 - ItemModel::$counter);
         $objItemModel->setId($id);
     }
     private function fillItemModel(ItemModel $objItemModel, SourceModel $objSourceModel, $item) {
@@ -44,7 +44,7 @@ class ItemController {
     }
     private function checkItemModelDB($db) {
         $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.sourceId, Item.categoryId, Item.moduleId
-                               FROM Item ORDER BY Item.id, Item.pubDate ASC LIMIT 1");
+                               FROM Item ORDER BY Item.id DESC LIMIT 1");
         $check->execute();
         $check = $check->fetchAll(PDO::FETCH_ASSOC);
 
@@ -103,23 +103,23 @@ class ItemController {
         if($objStdClass->older === "true")
         {
             $stmtSelectItem = $db->prepare("SELECT * FROM Item
-                                            WHERE Item.pubDate < :pubDate
+                                            WHERE Item.id < :id
                                             AND   Item.sourceId = :sourceId
                                             AND   Item.categoryId = :categoryId
                                             AND   Item.moduleId = :moduleId
-                                            ORDER BY Item.id ASC LIMIT :quantity");
+                                            ORDER BY Item.id DESC LIMIT :quantity");
         }
         else
         {
             $stmtSelectItem = $db->prepare("SELECT * FROM Item
-                                            WHERE Item.pubDate > :pubDate
+                                            WHERE Item.id > :id
                                             AND   Item.sourceId = :sourceId
                                             AND   Item.categoryId = :categoryId
                                             AND   Item.moduleId = :moduleId
-                                            ORDER BY Item.id ASC LIMIT :quantity");
+                                            ORDER BY Item.id DESC LIMIT :quantity");
         }
 
-        $stmtSelectItem->bindParam(":pubDate"    , strtolower($objStdClass->pubDate), PDO::PARAM_STR);
+        $stmtSelectItem->bindParam(":id"         , strtolower($objStdClass->id), PDO::PARAM_STR);
         $stmtSelectItem->bindParam(":sourceId"   , strtolower($objStdClass->sourceId), PDO::PARAM_STR);
         $stmtSelectItem->bindParam(":categoryId" , strtolower($objStdClass->categoryId), PDO::PARAM_STR);
         $stmtSelectItem->bindParam(":moduleId"   , strtolower($objStdClass->moduleId), PDO::PARAM_STR);

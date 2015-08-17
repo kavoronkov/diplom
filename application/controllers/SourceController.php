@@ -76,7 +76,8 @@ class SourceController {
 //                                         ':moduleId', strtolower($moduleId)));
         $stmtSelectSource = $stmtSelectSource->fetchAll(PDO::FETCH_CLASS, "SourceModel");
         return $stmtSelectSource;
-    }public function selectAllSourceModel()
+    }
+    public function selectAllSourceModel()
     {
         $db = DBConnection::getInstance()->_connection;
         $stmtSelectSource = $db->prepare("SELECT * FROM Source");
