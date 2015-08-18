@@ -24,6 +24,9 @@ class IndexController extends IController {
         $objItemController = new ItemController();
         if($json_request->id === "") {
             $objItemController->insertItemModel($objSourceModel[0]);
+        } elseif($json_request->id === "-1") {
+            $select = $objItemController->selectItemModelNoId($json_request);
+            echo json_encode($select);
         } else {
             $objItemController->insertItemModel($objSourceModel[0]);
             $selection = $objItemController->selectItemModel($json_request);

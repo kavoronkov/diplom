@@ -2,25 +2,9 @@
 
 class Application {
 
+    use Singleton;
+
     static public $mainCfg;
-
-    static private $_instance;
-
-    private function __construct(){}
-
-    private function __clone(){}
-
-    public static function getInstance() {
-        // проверяем актуальность экземпляра
-        if (null === self::$_instance) {
-            // создаем новый экземпляр
-            self::$_instance = new self();
-        }
-        // возвращаем созданный или существующий экземпляр
-        return self::$_instance;
-    }
-
-
 
     public function init() {
         self::getApplicationConfig();
@@ -29,11 +13,9 @@ class Application {
         $objFrontController = FrontController::getInstance();
         return $objFrontController;
     }
-
     private function getApplicationConfig() {
         self::$mainCfg = require_once "config/application.config.php";
     }
-
     private function setIncludePath() {
         if(is_array(self::$mainCfg["path"]) && !empty(self::$mainCfg["path"])) {
             $includePath = "";
@@ -44,11 +26,9 @@ class Application {
         }else {
             return false; }
     }
-
     private function setAutoload() {
         $autoLoad = self::$mainCfg["autoload"];
         require_once ($autoLoad["class"].".php");
         spl_autoload_register(array( $autoLoad["class"], $autoLoad["method"]));
     }
-
 }

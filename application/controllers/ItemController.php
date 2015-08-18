@@ -138,4 +138,30 @@ class ItemController {
         $stmtSelectItem = $stmtSelectItem->fetchAll(PDO::FETCH_ASSOC);
         return $stmtSelectItem;
     }
+    public function selectItemModelNoId(stdClass $objStdClass) {
+
+        $db = DBConnection::getInstance()->_connection;
+
+        $stmtSelectItem = $db->prepare("SELECT * FROM Item
+                                        WHERE Item.sourceId = :sourceId
+                                        AND   Item.categoryId = :categoryId
+                                        AND   Item.moduleId = :moduleId
+                                        ORDER BY Item.id DESC LIMIT :quantity");
+
+        $stmtSelectItem->bindParam(":sourceId"   , strtolower($objStdClass->sourceId), PDO::PARAM_STR);
+        $stmtSelectItem->bindParam(":categoryId" , strtolower($objStdClass->categoryId), PDO::PARAM_STR);
+        $stmtSelectItem->bindParam(":moduleId"   , strtolower($objStdClass->moduleId), PDO::PARAM_STR);
+        $quantity = (integer)$objStdClass->quantity;
+        $stmtSelectItem->bindParam(":quantity"   , $quantity, PDO::PARAM_INT);
+
+        $stmtSelectItem->execute();
+
+//        $stmtSelectItem->execute(array(":sourceId"    => strtolower($objStdClass->sourceId),
+//                                       ":categoryId"  => strtolower($objStdClass->categoryId),
+//                                       ":moduleId"    => strtolower($objStdClass->moduleId),
+//                                       ":quantity"    => $objStdClass->quantity));
+
+        $stmtSelectItem = $stmtSelectItem->fetchAll(PDO::FETCH_ASSOC);
+        return $stmtSelectItem;
+    }
 }

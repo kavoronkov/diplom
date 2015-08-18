@@ -39,16 +39,8 @@ class FrontController {
         }
 
     }
-
-    public function getBody()
-    {
-        echo $this->body;
-    }
-
-    public function setBody($body)
-    {
-        $this->body = $body;
-    }
+    public function getBody() { echo $this->body; }
+    public function setBody($body) { $this->body = $body; }
 
     private function getUrlParams($route) {
         $route_mask = Application::$mainCfg["route_mask"];
