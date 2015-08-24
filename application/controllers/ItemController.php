@@ -7,6 +7,12 @@ class ItemController {
         $id = date("YmdHis") . (1000 - ItemModel::$counter);
         $objItemModel->setId($id);
     }
+    private function cleanString($value) {
+        $value = trim($value);
+        $value = strip_tags($value);
+        $value = strtolower($value);
+        return $value;
+    }
     private function fillItemModel(ItemModel $objItemModel, SourceModel $objSourceModel, $item) {
 
         $this->createIdItemModel($objItemModel);
@@ -15,14 +21,15 @@ class ItemController {
 
             switch($itemProperty->getName())
             {
-                case "title" : $objItemModel->setItem(strtolower($itemProperty->__toString())); break;
-                case "link" : $objItemModel->setLink(strtolower($itemProperty->__toString())); break;
-                case "description" : $objItemModel->setDescription(strtolower($itemProperty->__toString())); break;
-                case "enclosure" : $objItemModel->setImage(strtolower($itemProperty->attributes()->url->__toString())); break;
-                case "pubDate" : $objItemModel->setPubDate(strtolower($itemProperty->__toString()));
-                                 $objItemModel->setSourceId(strtolower($objSourceModel->getId()));
-                                 $objItemModel->setCategoryId(strtolower($objSourceModel->getCategoryId()));
-                                 $objItemModel->setModuleId(strtolower($objSourceModel->getModuleId()));
+                case "title" : $objItemModel->setItem($this->cleanString($itemProperty->__toString())); break;
+                case "link" : $objItemModel->setLink($this->cleanString($itemProperty->__toString())); break;
+                case "description" : $objItemModel->setDescription($this->cleanString($itemProperty->__toString())); break;
+                case "enclosure" : $objItemModel->setImage($this->cleanString($itemProperty->attributes()->url->__toString())); break;
+                case "fulltext" : $objItemModel->setText($this->cleanString($itemProperty->__toString())); break;
+                case "pubDate" : $objItemModel->setPubDate($this->cleanString($itemProperty->__toString()));
+                                 $objItemModel->setSourceId($this->cleanString($objSourceModel->getId()));
+                                 $objItemModel->setCategoryId($this->cleanString($objSourceModel->getCategoryId()));
+                                 $objItemModel->setModuleId($this->cleanString($objSourceModel->getModuleId()));
                                  break;
                 default : echo "ERROR"; break;
             }
@@ -42,9 +49,16 @@ class ItemController {
 
         return false;
     }
-    private function checkItemModelDB($db) {
+    private function checkItemModelDB($db, SourceModel $objSourceModel) {
         $check = $db->prepare("SELECT Item.link, Item.pubDate, Item.sourceId, Item.categoryId, Item.moduleId
-                               FROM Item ORDER BY Item.id DESC LIMIT 1");
+                               FROM Item
+                               WHERE Item.sourceId = :sourceId
+                               AND   Item.categoryId = :categoryId
+                               AND   Item.moduleId = :moduleId
+                               ORDER BY Item.id DESC LIMIT 1");
+        $check->bindParam(":sourceId"   , strtolower($objSourceModel->getId()), PDO::PARAM_STR);
+        $check->bindParam(":categoryId" , strtolower($objSourceModel->getCategoryId()), PDO::PARAM_STR);
+        $check->bindParam(":moduleId"   , strtolower($objSourceModel->getModuleId()), PDO::PARAM_STR);
         $check->execute();
         $check = $check->fetchAll(PDO::FETCH_ASSOC);
 
@@ -61,7 +75,7 @@ class ItemController {
 
         $sxmlItem = $this->simplexmlSourceModel($objSourceModel);
 
-        $check = $this->checkItemModelDB($db);
+        $check = $this->checkItemModelDB($db, $objSourceModel);
 
         foreach($sxmlItem as $item) {
 
@@ -70,30 +84,32 @@ class ItemController {
             if( $this->checkItemModel($objItemModel, $check[0]) ) { break; }
 
             $stmtInsertItem = $db->prepare("INSERT INTO Item(id, name, link, description, image, pubDate,
-                                                                          sourceId, categoryId, moduleId)
+                                                                    text, sourceId, categoryId, moduleId)
                                             VALUES (:id, :name, :link, :description, :image, :pubDate,
-                                                                    :sourceId, :categoryId, :moduleId)");
+                                                              :text, :sourceId, :categoryId, :moduleId)");
 
-            $stmtInsertItem->bindParam(":id"         , strtolower($objItemModel->getId()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":name"       , strtolower($objItemModel->getName()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":link"       , strtolower($objItemModel->getLink()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":description", strtolower($objItemModel->getDescription()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":image"      , strtolower($objItemModel->getImage()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":pubDate"    , strtolower($objItemModel->getPubDate()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":sourceId"   , strtolower($objItemModel->getSourceId()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":categoryId" , strtolower($objItemModel->getCategoryId()), PDO::PARAM_STR);
-            $stmtInsertItem->bindParam(":moduleId"   , strtolower($objItemModel->getModuleId()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":id"         , $this->cleanString($objItemModel->getId()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":name"       , $this->cleanString($objItemModel->getName()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":link"       , $this->cleanString($objItemModel->getLink()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":description", $this->cleanString($objItemModel->getDescription()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":image"      , $this->cleanString($objItemModel->getImage()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":pubDate"    , $this->cleanString($objItemModel->getPubDate()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":text"       , $this->cleanString($objItemModel->getText()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":sourceId"   , $this->cleanString($objItemModel->getSourceId()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":categoryId" , $this->cleanString($objItemModel->getCategoryId()), PDO::PARAM_STR);
+            $stmtInsertItem->bindParam(":moduleId"   , $this->cleanString($objItemModel->getModuleId()), PDO::PARAM_STR);
             $stmtInsertItem->execute();
 
-//            $stmtInsertItem->execute(array(":id"          => strtolower($objItemModel->getId()),
-//                                           ":name"        => strtolower($objItemModel->getName()),
-//                                           ":link"        => strtolower($objItemModel->getLink()),
-//                                           ":description" => strtolower($objItemModel->getDescription()),
-//                                           ":image"       => strtolower($objItemModel->getImage()),
-//                                           ":pubDate"     => strtolower($objItemModel->getPubDate()),
-//                                           ":sourceId"    => strtolower($objItemModel->getSourceId()),
-//                                           ":categoryId"  => strtolower($objItemModel->getCategoryId()),
-//                                           ":moduleId"    => strtolower($objItemModel->getModuleId())));
+//            $stmtInsertItem->execute(array(":id"          => $this->cleanString($objItemModel->getId()),
+//                                           ":name"        => $this->cleanString($objItemModel->getName()),
+//                                           ":link"        => $this->cleanString($objItemModel->getLink()),
+//                                           ":description" => $this->cleanString($objItemModel->getDescription()),
+//                                           ":image"       => $this->cleanString($objItemModel->getImage()),
+//                                           ":pubDate"     => $this->cleanString($objItemModel->getPubDate()),
+//                                           ":text"        => $this->cleanString($objItemModel->getText()),
+//                                           ":sourceId"    => $this->cleanString($objItemModel->getSourceId()),
+//                                           ":categoryId"  => $this->cleanString($objItemModel->getCategoryId()),
+//                                           ":moduleId"    => $this->cleanString($objItemModel->getModuleId())));
         }
     }
     public function selectItemModel(stdClass $objStdClass) {

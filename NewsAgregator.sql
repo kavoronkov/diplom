@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Авг 13 2015 г., 16:52
+-- Время создания: Авг 24 2015 г., 22:30
 -- Версия сервера: 5.5.41-log
 -- Версия PHP: 5.4.35
 
@@ -44,6 +44,7 @@ INSERT INTO `Category` (`id`, `name`, `moduleId`) VALUES
 ('news_culture', 'culture', 'news'),
 ('news_economics', 'economics', 'news'),
 ('news_interview', 'interview', 'news'),
+('news_mainbyday', 'mainbyday', 'news'),
 ('news_news', 'news', 'news'),
 ('news_photo', 'photo', 'news'),
 ('news_politics', 'politics', 'news'),
@@ -70,9 +71,9 @@ CREATE TABLE IF NOT EXISTS `Item` (
   `image` varchar(256) NOT NULL,
   `pubDate` varchar(64) NOT NULL,
   `text` text,
-  `moduleId` varchar(64) DEFAULT NULL,
-  `categoryId` varchar(64) DEFAULT NULL,
-  `sourceId` varchar(64) DEFAULT NULL,
+  `moduleId` varchar(64) NOT NULL,
+  `categoryId` varchar(64) NOT NULL,
+  `sourceId` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -122,6 +123,7 @@ CREATE TABLE IF NOT EXISTS `Source` (
 --
 
 INSERT INTO `Source` (`id`, `name`, `url`, `xml`, `title`, `description`, `moduleId`, `categoryId`) VALUES
+('news_all_korrespondent', 'korrespondent', 'http://korrespondent.net', 'http://k.img.com.ua/rss/ru/all_news2.0.xml', 'Корреспондент.net -- Украинская сеть новостей', 'Корреспондент - информационно-новостной портал №1 в Украине. Объективно о событиях по всему миру', 'news', 'news_all'),
 ('news_all_liga', 'liga', 'www.liga.net', 'http://news.liga.net/all/rss.xml', 'Новости Украины 24 часа в сутки : ЛІГАБізнесІнформ', 'Ежедневные новости Украины: Оперативно, Достоверно, 24 часа в сутки. Последние новости, фотографии с места событий. Горячие новости: политика, экономика и финансы, общество, мир, культура, спорт и новости Киева.', 'news', 'news_all'),
 ('news_articles_liga', 'liga', 'www.liga.net', 'http://news.liga.net/articles/rss.xml', 'Настоящие новости Украины : ЛІГА.Новости', 'Ежедневные новости: политика, власть, экономика и финансы, общество, мир, технологии. Фотографии с места событий.', 'news', 'news_articles'),
 ('news_capital_liga', 'liga', 'www.liga.net', 'http://news.liga.net/capital/rss.xml', 'Новости Украины 24 часа в сутки : ЛІГАБізнесІнформ', 'Ежедневные новости Украины: Оперативно, Достоверно, 24 часа в сутки. Последние новости, фотографии с места событий. Горячие новости: политика, экономика и финансы, общество, мир, культура, спорт и новости Киева.', 'news', 'news_capital'),
@@ -130,6 +132,7 @@ INSERT INTO `Source` (`id`, `name`, `url`, `xml`, `title`, `description`, `modul
 ('news_interview_liga', 'liga', 'www.liga.net', 'http://news.liga.net/interview/rss.xml', 'Настоящие новости Украины : ЛІГА.Новости', 'Ежедневные новости: политика, власть, экономика и финансы, общество, мир, технологии. Фотографии с места событий.', 'news', 'news_interview'),
 ('news_news_liga', 'liga', 'www.liga.net', 'http://news.liga.net/news/rss.xml', 'Настоящие новости Украины : ЛІГА.Новости', 'Ежедневные новости: политика, власть, экономика и финансы, общество, мир, технологии. Фотографии с места событий.', 'news', 'news_news'),
 ('news_photo_liga', 'liga', 'www.liga.net', 'http://news.liga.net/photo/rss.xml', 'Настоящие новости Украины : ЛІГА.Новости', 'Ежедневные новости: политика, власть, экономика и финансы, общество, мир, технологии. Фотографии с места событий.', 'news', 'news_photo'),
+('news_politics_korrespondent', 'korrespondent', 'http://korrespondent.net', 'http://k.img.com.ua/rss/ru/politics.xml', 'Корреспондент.net -- Украинская сеть новостей', 'Корреспондент - информационно-новостной портал №1 в Украине. Объективно о событиях по всему миру', 'news', 'news_politics'),
 ('news_politics_liga', 'liga', 'www.liga.net', 'http://news.liga.net/politics/rss.xml', 'Новости Украины 24 часа в сутки : ЛІГАБізнесІнформ', 'Ежедневные новости Украины: Оперативно, Достоверно, 24 часа в сутки. Последние новости, фотографии с места событий. Горячие новости: политика, экономика и финансы, общество, мир, культура, спорт и новости Киева.', 'news', 'news_politics'),
 ('news_smi_liga', 'liga', 'www.liga.net', 'http://news.liga.net/smi/rss.xml', 'Новости Украины 24 часа в сутки : ЛІГАБізнесІнформ', 'Ежедневные новости Украины: Оперативно, Достоверно, 24 часа в сутки. Последние новости, фотографии с места событий. Горячие новости: политика, экономика и финансы, общество, мир, культура, спорт и новости Киева.', 'news', 'news_smi'),
 ('news_society_liga', 'liga', 'www.liga.net', 'http://news.liga.net/society/rss.xml', 'Новости Украины 24 часа в сутки : ЛІГАБізнесІнформ', 'Ежедневные новости Украины: Оперативно, Достоверно, 24 часа в сутки. Последние новости, фотографии с места событий. Горячие новости: политика, экономика и финансы, общество, мир, культура, спорт и новости Киева.', 'news', 'news_society'),
