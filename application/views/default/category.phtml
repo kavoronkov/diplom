@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Module</title>
+
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
+    <!-- Latest compiled and minified CSS -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+    <!-- Optional theme -->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">-->
+    <!-- Latest compiled and minified JavaScript -->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+
+    <!--jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../../../public/js/jquery-1.11.3.js"></script>
+    <!--Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../../../public/js/bootstrap.js"></script>
+    <!--Bootstrap -->
+    <link href="../../../public/css/bootstrap.css" rel="stylesheet">
+    <link href="../../../public/css/bootstrap-theme.css" rel="stylesheet">
+    <link href="../../../public/css/stylesheet.css" rel="stylesheet">
+
+</head>
+<body>
+<h1>MODULE</h1>
+<div class="container">
+    <div class="row" id="module_modal">
+        <div class="col-lg-12">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary  btn-block"
+                    data-toggle="modal" data-target="#AddModuleModal">
+                ADD
+            </button>
+        </div>
+
+        <div class="modal fade" id="AddModuleModal" tabindex="-1"
+             role="dialog" aria-labelledby="AddModuleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="AddModuleModalLabel">MODULE</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addModule" action="ModuleController.php" method="post" class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label for="inputName" class="col-lg-2 col-md-2 col-sm-2 col-xs-2 control-label">Name</label>
+                                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+                                    <input type="text" class="form-control" id="inputName" name="name" placeholder="Name">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">CANCEL</button>
+                        <button form="addModule" type="submit" class="btn btn-primary">SAVE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="row" id="module_header">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 module_header">ID</div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 module_header">NAME</div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 module_header">ACTION</div>
+    </div>
+    <?php
+    $objModuleController = new ModuleController();
+    $modules = $objModuleController->selectAllModuleModel();
+    foreach($modules as $value) : ?>
+        <div class='row' id='<?=$value['id']?>'>
+            <div class='col-lg-4 col-md-4 col-sm-4 col-xs-12 module_body'><?=$value['id']  ?></div>
+            <div class='col-lg-4 col-md-4 col-sm-4 col-xs-12 module_body'><?=$value['name']?> </div>
+            <div class='col-lg-4 col-md-4 col-sm-4 col-xs-12 module_body'>
+                <button type='button' class='changeMod btn btn-primary btn-xs btn-block'
+                        data-toggle='modal' data-target='#EditModuleModal'>MODIFY</button>
+            </div>
+        </div>
+    <?endforeach;?>
+
+    <div class="row" id="module_footer">
+        <div class="col-lg-12">
+            <a href="http://diplom/index/index">
+                <button type="button" class="btn btn-primary  btn-block">BACK</button>
+            </a>
+        </div>
+    </div>
+
+    <form id="changeModule" action='ModuleController.php' method='post' class='form-horizontal' role='form'>
+        <div class='modal fade' id='EditModuleModal' tabindex='-1'
+             role='dialog' aria-labelledby='EditModuleModalLabel' aria-hidden='true'>
+            <div class='modal-dialog modal-lg'>
+                <div class='modal-content'>
+                    <div class='modal-header'>
+                        <button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+                        <h4 class='modal-title' id='EditModuleModalLabel'>MODULE</h4>
+                    </div>
+                    <div class='modal-body'>
+                        <div class='form-group'>
+                            <label for='inputName' class='col-lg-2 col-md-2 col-sm-2 col-xs-2 control-label'>Old Name</label>
+                            <div class='col-lg-10 col-md-10 col-sm-10 col-xs-10'>
+                                <input type='text' class='form-control' id='moduleOldName' name='oldName' placeholder='Name' disabled>
+                            </div>
+                        </div>
+                        <div class='form-group'>
+                            <label for='inputName' class='col-lg-2 col-md-2 col-sm-2 col-xs-2 control-label'>New Name</label>
+                            <div class='col-lg-10 col-md-10 col-sm-10 col-xs-10'>
+                                <input type='text' class='form-control' id='moduleNewName' name='newName' placeholder='Name'>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='modal-footer'>
+                        <button type='button' class='btn btn-default' data-dismiss='modal'>CANCEL</button>
+                        <button type='submit' class='btn btn-primary'>SAVE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!--        ";}-->
+    <!--    ?>-->
+
+    <script>
+        $(function(){
+
+            function setModalChangeListeners() {
+                var chMods = document.querySelectorAll("button.changeMod");
+                for (var i = 0; i < chMods.length; ++i) {
+                    chMods[i].addEventListener("click", function () {
+                        var row = this.parentNode.parentNode;
+                        var oldName = document.getElementById("moduleOldName");
+                        var newName = document.getElementById("moduleNewName");
+                        var siblings = row.querySelectorAll("div");
+                        oldName.value = siblings[0].innerHTML;
+                        newName.value = siblings[1].innerHTML;
+                    });
+                }
+            }
+
+            setModalChangeListeners();
+        });
+    </script>
+
+</div>
+
+</body>
+</html>
