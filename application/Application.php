@@ -2,7 +2,25 @@
 
 class Application {
 
-    use Singleton;
+    static private $_instance;
+
+    private function __construct(){}
+
+    final public function __destruct() {
+        self::$_instance = null;
+    }
+
+    private function __clone(){}
+
+    public static function getInstance() {
+        // провер€ем актуальность экземпл€ра
+        if (null === self::$_instance) {
+            // создаем новый экземпл€р
+            self::$_instance = new self();
+        }
+        // возвращаем созданный или существующий экземпл€р
+        return self::$_instance;
+    }
 
     static public $mainCfg;
 
